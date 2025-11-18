@@ -7,24 +7,26 @@
 #include <uart.h>      // Fleury UART
 #include <twi.h>       // Fryza TWI (I2C)
 #include <gpio.h>      // GPIO library for AVR-GCC
-#include "timer.h"     // Fryza Timer utilities (1ms overflow)
-#include "bme280.h"    // Our BME280 driver
-/* Note: lcd.h is used inside encoder.c, no need to include it here unless main uses it */
-#include "encoder.h"   // Our KY040 Encoder driver
-#include "sdlog.h"
+#include "timer.h"     // Fryza Timer utilities (Timer0/Timer2 macros)
+#include "bme280.h"    // BME280 driver (T, P, H)
+#include "encoder.h"   // KY-040 encoder + LCD UI
+#include "sdlog.h"     // SD card logging helpers
 
 #ifndef F_CPU
-#define F_CPU 16000000UL
+# define F_CPU 16000000UL   // Arduino Uno, ATmega328P, 16 MHz
 #endif
 
+#define SAMPLE_PERIOD_MS 1000UL   // Sensor sampling interval
+
 /* ----------------------------------------------------
-   Global software time (milliseconds)
+   Global software time (milliseconds, from Timer0)
    ---------------------------------------------------- */
 volatile uint32_t g_millis = 0;
 
+/* Timer0 overflow ISR: increments millisecond counter */
 ISR(TIMER0_OVF_vect)
 {
-    g_millis++;    /* called every ~1 ms */
+    g_millis++;    // called every ~1 ms
 }
 
 /* Thread-safe access to g_millis */
@@ -38,7 +40,7 @@ static uint32_t millis(void)
     return t;
 }
 
-/* Simple println wrapper */
+/* Simple UART "println" helper */
 static void uart_println(const char *s)
 {
     uart_puts(s);
@@ -46,32 +48,36 @@ static void uart_println(const char *s)
 }
 
 /* ----------------------------------------------------
-   Main application (BME280 logger)
+   Main application (BME280 + LCD + SD logger)
    ---------------------------------------------------- */
 int main(void)
 {
-    /* UART 9600 baud (works reliably with ATmega328P/16 MHz) */
+    /* Initialize UART (9600 baud) */
     uart_init(UART_BAUD_SELECT(9600, F_CPU));
 
-    /* Initialize I2C/TWI */
+    /* Initialize I2C/TWI for BME280 and potentially other sensors */
     twi_init();
 
-    /* Timer0 overflow every ~1 ms */
+    /* Timer0: 1 ms overflow, used for millis() */
     tim0_ovf_1ms();
     tim0_ovf_enable();
 
-    /* Initialize display/encoder module and its timer (Timer2) */
-    encoder_init();        /* initializes minimal LCD and encoder pins */
-    encoder_timer_init();  /* configures Timer2 overflow + ISR to request periodic redraw */
+    /* Initialize LCD+encoder UI and its Timer2-based refresh mechanism */
+    encoder_init();        // Configure LCD and encoder pins
+    encoder_timer_init();  // Configure Timer2 interrupt for periodic UI refresh
 
-    sei();  /* enable interrupts */
+    /* Enable global interrupts */
+    sei();
 
     uart_println("BME280 data logger starting...");
 
-    /* Check if sensor is connected */
+    /* Optional: check presence of BME280 on I2C bus */
     if (twi_test_address(BME280_I2C_ADDR) != 0)
+    {
         uart_println("ERROR: BME280 not found!");
+    }
 
+    /* Initialize BME280 calibration and measurement settings */
     bme280_init();
     uart_println("BME280 initialized.");
 
@@ -79,53 +85,60 @@ int main(void)
     char bufT[16], bufP[16], bufH[16];
     char line[64];
 
-    uint32_t last = millis();
+    /* Time of last measurement */
+    uint32_t last_sample = millis();
 
-    /* Request an initial redraw via the encoder module */
+    /* Force initial UI redraw */
     encoder_request_redraw();
 
     while (1)
     {
-        /* Poll encoder frequently so UI feels responsive */
+        /* Poll encoder frequently so the UI feels responsive */
         encoder_poll();
 
-        /* after polling encoder, handle start/stop request */
+        /* Handle encoder button: toggle SD logging on/off */
         if (flag_sd_toggle)
         {
             flag_sd_toggle = 0;
-            if (sd_logging) sd_log_stop();
-            else sd_log_start();
+
+            if (sd_logging)
+                sd_log_stop();
+            else
+                sd_log_start();
         }
 
-        /* Update every 1000 ms: read sensor, print to UART, update encoder display values */
-        if (millis() - last >= 1000)
+        /* Periodic measurement & logging */
+        uint32_t now = millis();
+        if ((now - last_sample) >= SAMPLE_PERIOD_MS)
         {
-            last += 1000;
+            last_sample += SAMPLE_PERIOD_MS;
 
-            /* Read sensor */
+            /* Read sensor (compensated values) */
             bme280_read(&T, &P, &H);
 
-            /* Convert float -> string (AVR does not support float printf) */
+            /* Convert float -> string (AVR libc has no float printf) */
             dtostrf(T, 6, 2, bufT);
             dtostrf(P, 7, 2, bufP);
             dtostrf(H, 6, 2, bufH);
 
-            /* Format final output line and send via UART */
-            snprintf(line, sizeof(line), "T=%s C, P=%s hPa, H=%s %%", bufT, bufP, bufH);
+            /* Format line and send via UART */
+            snprintf(line, sizeof(line),
+                     "T=%s C, P=%s hPa, H=%s %%", bufT, bufP, bufH);
             uart_println(line);
 
-            /* Update encoder/display module with new measured values and request redraw */
+            /* Push new values into UI module and request redraw */
             encoder_set_values(T, P, H);
             encoder_request_redraw();
 
-            /* If logging is active, append measurement to buffer */
-            if (sd_logging) sd_log_append_line(T, P, H);
+            /* If logging is active, append current measurement */
+            if (sd_logging)
+                sd_log_append_line(T, P, H);
         }
 
-        /* If encoder/display requests a redraw, this will draw it now */
+        /* Perform LCD redraw if requested by encoder module/Timer2 ISR */
         encoder_draw_if_needed();
 
-        /* Minimal idle - do not block (no delays) */
+        /* No blocking delays here: loop stays responsive */
     }
 
     return 0;
