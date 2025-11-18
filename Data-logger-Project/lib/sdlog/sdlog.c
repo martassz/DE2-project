@@ -1,11 +1,9 @@
 /*
- * sdlog.c
  *
  * Buffered CSV logging to SD card.
  * - Uses weak low-level wrappers: sdcard_init/open_append/write/close
  * - Uses g_millis (extern) as fallback timestamp source (seconds since power-on).
  *
- * Comments and identifiers are in English.
  */
 
 #include "sdlog.h"
@@ -113,7 +111,10 @@ int sd_log_start(void)
         return -1;
     }
 
-    if (sdcard_open_append(SD_FILENAME) != 0)
+    char fname[20];
+    snprintf(fname, sizeof(fname), "L%lu.TXT", (unsigned long)(g_millis / 1000));
+
+    if (sdcard_open_append(fname) != 0)
     {
         dbg_print("SD open failed");
         return -2;
@@ -143,21 +144,6 @@ void sd_log_stop(void)
     sd_logging = false;
     dbg_print("SD logging stopped");
 }
-
-/* -----------------------------------------------------------
- * Weak default implementations of the low-level SD wrappers.
- * Replace these by providing non-weak functions in your SD module
- * (for example in sdcard_sdfat.c that uses the SdFat library).
- *
- * Signatures:
- *   int sdcard_init(void);                    // 0 == OK
- *   int sdcard_open_append(const char *fn);   // 0 == OK
- *   int sdcard_write(const void *buf, size_t len); // >=0 bytes written, <0 error
- *   void sdcard_close(void);
- *
- * The weak default returns errors so build/link works but runtime
- * will not actually write to SD until you implement real wrappers.
- * ----------------------------------------------------------- */
 
 int __attribute__((weak)) sdcard_init(void)
 {
