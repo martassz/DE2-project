@@ -9,6 +9,7 @@
 #include "bme280.h"
 #include "LightSensor.h"
 #include "loggerControl.h"
+#include "sdlog.h"
 
 #include "lcd.h"        // HD44780 LCD library (assumed present)
 #include "timer.h"      // for tim2_ovf_16ms(), tim2_ovf_enable()
@@ -76,9 +77,16 @@ static void timer2_init_for_display_1s(void)
     tim2_ovf_enable();
 }
 
+/* ---------------- SD log ---------------- */
+extern volatile uint8_t flag_sd_toggle;
+
+static uint8_t last_s = 0;    // compare with g_time in loop
+
+/* === Main function === */
 int main(void) {
     uart_init(UART_BAUD_SELECT(9600,F_CPU));
     twi_init();
+    sd_log_init();
 
     /* Timer0: 1 ms overflow */
     TIMSK0 = (1<<TOIE0);
@@ -153,6 +161,25 @@ int main(void) {
         if (flag_update_lcd) {
             flag_update_lcd = 0;
             logger_display_draw();
+        }
+
+        /* SD measurements logging */
+        if(flag_sd_toggle) {
+            flag_sd_toggle = 0;
+
+            if(!sd_logging) {
+                sd_log_start();
+            } else {
+                sd_log_stop();
+            }
+        }
+
+        if (g_time.s != last_s) {
+            last_s = g_time.s;
+
+            if(sd_logging) {
+                sd_log_append_line(g_T, g_P, g_H);
+            }
         }
 
         /* small delay to keep loop sane */

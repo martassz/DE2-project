@@ -2,7 +2,6 @@
  *
  * Buffered CSV logging to SD card.
  * - Uses weak low-level wrappers: sdcard_init/open_append/write/close
- * - Uses g_millis (extern) as fallback timestamp source (seconds since power-on).
  *
  */
 
@@ -15,8 +14,7 @@
 #include <stdlib.h>
 
 #include <uart.h>   /* for debug prints (uart_puts) */
-
-extern volatile uint32_t g_millis; /* defined in main.c */
+#include "loggerControl.h"
 
 /* Module state */
 volatile uint8_t flag_sd_toggle = 0;       /* set by encoder code to request start/stop */
@@ -39,11 +37,13 @@ static void dbg_print(const char *s)
     uart_puts("\r\n");
 }
 
-/* Timestamp helper — fallback to seconds since power-on using g_millis */
+/* Timestamp helper — fallback to seconds since power-on using RTC */
 static void format_timestamp(char *buf, size_t len)
 {
-    uint32_t s = g_millis / 1000UL;
-    snprintf(buf, len, "%lu", (unsigned long)s);
+    snprintf(buf, len, "%02u:%02u:%02u",
+             (unsigned)g_time.h,
+             (unsigned)g_time.m,
+             (unsigned)g_time.s);
 }
 
 /* Initialize module (optional) */
@@ -112,7 +112,9 @@ int sd_log_start(void)
     }
 
     char fname[20];
-    snprintf(fname, sizeof(fname), "L%lu.TXT", (unsigned long)(g_millis / 1000));
+    snprintf(fname, sizeof(fname), "%02u%02u_LOG.TXT",
+            (unsigned)g_time.h,
+            (unsigned)g_time.m);
 
     if (sdcard_open_append(fname) != 0)
     {

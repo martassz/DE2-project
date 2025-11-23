@@ -8,7 +8,7 @@
 #include "lcd.h"
 #include "twi.h"
 
-/* ----------------- PIN DEFINICE ENKODÉRU ------------------ */
+/* Encoder Pins */
 #define ENC_SW   PC0
 #define ENC_DT   PC1
 #define ENC_CLK  PC2
@@ -17,13 +17,13 @@
 #define ENC_DDR_REG   DDRB
 #define ENC_PIN_REG   PINB
 
-/* Lokální stav enkodéru */
+/* Local encoder state */
 static uint8_t lastStateCLK = 0;
 
 /* Forward */
 static uint8_t bcd2dec(uint8_t v) { return ((v>>4)*10 + (v & 0x0F)); }
 
-/* ----------------- LCD INIT ------------------ */
+/* LCD INIT  */
 void logger_display_init(void)
 {
     lcd_init(LCD_DISP_ON);
@@ -34,7 +34,7 @@ void logger_display_init(void)
     lcd_puts("Starting...");
 }
 
-/* ----------------- ENCODER INIT ------------------ */
+/* ENCODER INIT */
 void logger_encoder_init(void)
 {
     ENC_DDR_REG  &= ~((1 << ENC_CLK) | (1 << ENC_DT) | (1 << ENC_SW));
@@ -43,7 +43,7 @@ void logger_encoder_init(void)
     lastStateCLK = (ENC_PIN_REG & (1 << ENC_CLK)) ? 1 : 0;
 }
 
-/* ----------------- ENCODER POLL ------------------ */
+/* ENCODER POLL */
 void logger_encoder_poll(void)
 {
     uint8_t currentStateCLK = (ENC_PIN_REG & (1 << ENC_CLK)) ? 1 : 0;
@@ -68,7 +68,7 @@ void logger_encoder_poll(void)
     /* Button handled in main if needed */
 }
 
-/* ----------------- RTC READ TIME ------------------ */
+/* RTC READ TIME */
 #define RTC_ADR     0x68
 #define RTC_SEC_MEM 0x00
 
@@ -89,7 +89,7 @@ void logger_rtc_read_time(void)
     SREG = sreg;
 }
 
-/* ----------------- DISPLAY DRAW ------------------ */
+/* DISPLAY DRAW */
 void logger_display_draw(void)
 {
     char buf[16];

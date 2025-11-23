@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-/* ################  TYPES  ################ */
+/* Types */
 
 typedef struct {
     uint8_t h;
@@ -11,7 +11,7 @@ typedef struct {
     uint8_t s;
 } rtc_time_t;
 
-/* ########### EXTERNAL SHARED VARIABLES ############ */
+/* External shared variables */
 extern volatile uint8_t lcdValue;
 extern volatile uint8_t flag_update_lcd;
 
@@ -21,7 +21,7 @@ extern volatile float g_H;
 
 extern volatile rtc_time_t g_time;
 
-/* ############# PUBLIC API ################ */
+/* Public API */
 
 void logger_display_init(void);
 void logger_display_draw(void);
