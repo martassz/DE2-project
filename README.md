@@ -36,3 +36,8 @@ This project focuses on creating a portable environmental data logger implemente
 ## Software design
 
 TO-DO: **add here** system-level block diagrams, flowcharts, or pseudocode showing the planned software logic and control flow
+
+## References
+
+* Digital Electronics 2 Course (Brno University of Technology): https://github.com/tomas-fryza/avr-labs
+* Petit FAT File System Module: https://elm-chan.org/fsw/ff/00index_p.html
