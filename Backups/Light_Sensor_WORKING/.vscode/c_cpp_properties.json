@@ -1,0 +1,42 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "C:/Users/mafih/OneDrive - VUT/DE2/Project/Light_Sensor/Light_Sensor/include",
+                "C:/Users/mafih/OneDrive - VUT/DE2/Project/Light_Sensor/Light_Sensor/src",
+                "C:/Users/mafih/OneDrive - VUT/DE2/Project/Light_Sensor/Light_Sensor/lib/LightSensor",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "C:/Users/mafih/OneDrive - VUT/DE2/Project/Light_Sensor/Light_Sensor/include",
+                    "C:/Users/mafih/OneDrive - VUT/DE2/Project/Light_Sensor/Light_Sensor/src",
+                    "C:/Users/mafih/OneDrive - VUT/DE2/Project/Light_Sensor/Light_Sensor/lib/LightSensor",
+                    ""
+                ]
+            },
+            "defines": [
+                "F_CPU=16000000L",
+                "PLATFORMIO=60118",
+                "ARDUINO_AVR_UNO",
+                "__AVR_ATmega328P__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/mafih/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega328p",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}

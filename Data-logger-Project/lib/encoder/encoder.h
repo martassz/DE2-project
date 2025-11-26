@@ -26,23 +26,23 @@
  */
 
 #ifndef ENC_SW
-#define ENC_SW   PC3
+#define ENC_SW   PC1
 #endif
 #ifndef ENC_DT
-#define ENC_DT   PC4
+#define ENC_DT   PC2
 #endif
 #ifndef ENC_CLK
-#define ENC_CLK  PC5
+#define ENC_CLK  PC3
 #endif
 
 #ifndef ENC_PORT_REG
-#define ENC_PORT_REG  PORTB
+#define ENC_PORT_REG  PORTC
 #endif
 #ifndef ENC_DDR_REG
-#define ENC_DDR_REG   DDRB
+#define ENC_DDR_REG   DDRC
 #endif
 #ifndef ENC_PIN_REG
-#define ENC_PIN_REG   PINB
+#define ENC_PIN_REG   PINC
 #endif
 
 #ifdef __cplusplus
