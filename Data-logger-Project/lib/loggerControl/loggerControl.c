@@ -1,39 +1,62 @@
+/*
+ * loggerControl.c - Complete Implementation
+ * * Vlastnosti:
+ * - Ovládání rotačního enkodéru pomocí stavového automatu (odolné proti zákmětům)
+ * - I2C LCD výstup
+ * - Čtení času z DS1302/DS3231
+ */
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "loggerControl.h"
-#include "lcd_i2c.h" /* Updated to use your I2C LCD library */
+#include "lcd_i2c.h" 
 #include "twi.h"
 #include "ds1302.h"
-#include "sdlog.h"   /* Access to sd_logging variable */
+#include "sdlog.h"   
 
-/* Encoder Pins */
-#define ENC_SW   PC0
-#define ENC_DT   PC1
-#define ENC_CLK  PC2
+/* --- KONFIGURACE PINŮ ENKODÉRU (PORTC) --- */
+#define ENC_SW   PC1
+#define ENC_DT   PC2
+#define ENC_CLK  PC3
 
-#define ENC_PORT_REG  PORTB
-#define ENC_DDR_REG   DDRB
-#define ENC_PIN_REG   PINB
+#define ENC_PORT_REG  PORTC
+#define ENC_DDR_REG   DDRC
+#define ENC_PIN_REG   PINC
 
-/* Local encoder state */
-static uint8_t lastStateCLK = 0;
+/* --- DEFINICE ADRES RTC (které chyběly) --- */
+#define RTC_ADR     0x68
+#define RTC_SEC_MEM 0x00
 
-/* Global variables for display control */
+/* --- EXTERNÍ PROMĚNNÉ --- */
+// Potřebujeme čas systému z main.c pro debounce tlačítka
+extern volatile uint32_t g_millis; 
+
+/* --- LOKÁLNÍ PROMĚNNÉ PRO ENKODÉR (STAVOVÝ AUTOMAT) --- */
+// Tabulka platných přechodů (Grayův kód). 
+// Eliminuje zákmity kontaktů lépe než prosté čtení hrany.
+static const int8_t encoder_table[] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};
+
+static uint8_t old_AB = 0;         // Minulý stav pinů CLK a DT
+static int8_t enc_counter = 0;     // Počítadlo kroků
+static uint32_t last_btn_time = 0; // Čas posledního stisku tlačítka
+
+/* --- GLOBÁLNÍ PROMĚNNÉ PRO DISPLEJ --- */
 /* 0=Temp, 1=Pressure, 2=Humidity, 3=Light */
-/* Default is 0 (Temperature) */
 volatile uint8_t lcdValue = 0;      
-volatile uint8_t flag_update_lcd = 0; // 1 = Please redraw display
+volatile uint8_t flag_update_lcd = 0; // 1 = Žádost o překreslení
 
-/* Helper function for BCD conversion from RTC */
+/* Pomocná funkce pro BCD */
 static uint8_t bcd2dec(uint8_t v) { return ((v>>4)*10 + (v & 0x0F)); }
 
-/* Display initialization and intro screen */
+/* ==========================================
+ * INICIALIZACE A UI
+ * ========================================== */
+
 void logger_display_init(void)
 {
-    // Using lcd_i2c functions
     lcd_i2c_init(); 
     lcd_i2c_clrscr();
     
@@ -41,72 +64,100 @@ void logger_display_init(void)
     lcd_i2c_puts("  DATA LOGGER  ");
     lcd_i2c_gotoxy(0,1);
     lcd_i2c_puts("   VUT FEKT    ");
-    // Small delay to show intro
 }
 
-/* Encoder Initialization */
 void logger_encoder_init(void)
 {
-    // Set pins as inputs (0)
+    // Nastavit piny jako vstup (0)
     ENC_DDR_REG  &= ~((1 << ENC_CLK) | (1 << ENC_DT) | (1 << ENC_SW));
-    // Enable internal pull-up resistors (1)
+    // Zapnout interní pull-up rezistory (1)
     ENC_PORT_REG |=  ((1 << ENC_CLK) | (1 << ENC_DT) | (1 << ENC_SW));
 
-    // Read initial state to prevent false trigger on startup
-    // We read it multiple times or just once to be sure
-    lastStateCLK = (ENC_PIN_REG & (1 << ENC_CLK)) ? 1 : 0;
+    // Načíst počáteční stav pinů pro stavový automat
+    uint8_t clk = (ENC_PIN_REG & (1 << ENC_CLK)) ? 1 : 0;
+    uint8_t dt  = (ENC_PIN_REG & (1 << ENC_DT))  ? 1 : 0;
+    
+    // Uložíme si počáteční stav (bit 1 = CLK, bit 0 = DT)
+    old_AB = (clk << 1) | dt;
 }
 
-/* Encoder Polling - Call frequently in main loop */
+/* * Hlavní funkce pro čtení enkodéru.
+ * Volat co nejčastěji v main loop.
+ */
 void logger_encoder_poll(void)
 {
-    uint8_t currentStateCLK = (ENC_PIN_REG & (1 << ENC_CLK)) ? 1 : 0;
+    // --- 1. ČTENÍ OTÁČENÍ (Tabulková metoda) ---
+    
+    // Přečteme aktuální piny
+    uint8_t clk = (ENC_PIN_REG & (1 << ENC_CLK)) ? 1 : 0;
+    uint8_t dt  = (ENC_PIN_REG & (1 << ENC_DT))  ? 1 : 0;
 
-    // Detect CLK state change (rotation)
-    // We only react to the Falling Edge (1 -> 0) or Rising Edge (0 -> 1)
-    // Typically for KY-040, checking when CLK goes LOW is reliable.
-    if (currentStateCLK != lastStateCLK && currentStateCLK == 0) {
-        // If CLK went LOW, check DT pin
-        uint8_t dt = (ENC_PIN_REG & (1 << ENC_DT)) ? 1 : 0;
+    // Vytvoříme novou hodnotu stavu (0-3)
+    uint8_t current_AB = (clk << 1) | dt;
+
+    // Pouze pokud se stav změnil
+    if (current_AB != (old_AB & 0x03)) {
         
-        if (dt != currentStateCLK) {
-            // Direction CW (Clockwise) -> 0, 1, 2, 3, 0...
+        // Vytvoříme index do tabulky: (Starý_Stav << 2) | Nový_Stav
+        old_AB <<= 2;
+        old_AB |= current_AB;
+
+        // Přičteme pohyb z tabulky
+        enc_counter += encoder_table[old_AB & 0x0F];
+
+        // POZOR: Zde se ladí citlivost.
+        // Standardní KY-040 má 4 fáze na 1 fyzické cvaknutí.
+        // Pokud to chodí moc ztuha, změň 4 na 2.
+        if (enc_counter >= 4) { 
+            // KROK VPRAVO (CW)
             lcdValue++;
             if (lcdValue > 3) lcdValue = 0;
+            
+            flag_update_lcd = 1;
+            enc_counter = 0; 
         }
-        else {
-            // Direction CCW (Counter-Clockwise) -> 0, 3, 2, 1, 0...
+        else if (enc_counter <= -4) {
+            // KROK VLEVO (CCW)
             if (lcdValue == 0) lcdValue = 3;
             else lcdValue--;
+            
+            flag_update_lcd = 1;
+            enc_counter = 0; 
         }
-        
-        // Important: Tell main.c we want to redraw display
-        flag_update_lcd = 1; 
     }
-    lastStateCLK = currentStateCLK;
+    // Uložíme stav pro příští průchod (maskování na 2 bity)
+    old_AB &= 0x03; 
 
-    /* Button detection (SW) - with simple debounce */
+    // --- 2. ČTENÍ TLAČÍTKA (S časovým zámkem) ---
+    
     if ((ENC_PIN_REG & (1 << ENC_SW)) == 0) {
-        // Button pressed (Active Low)
-        flag_sd_toggle = 1; 
+        // Tlačítko je stisknuté (Active Low)
+        uint32_t now = g_millis; 
+        
+        // Debounce: reagujeme maximálně jednou za 250 ms
+        if ((now - last_btn_time) > 250) {
+            flag_sd_toggle = 1;      // Požadavek na start/stop logování
+            flag_update_lcd = 1;     // Překreslit, aby se objevila hvězdička
+            last_btn_time = now;
+        }
     }
 }
 
-/* Read time from RTC DS3231 (Original I2C Implementation) */
-#define RTC_ADR     0x68
-#define RTC_SEC_MEM 0x00
+/* ==========================================
+ * RTC A DISPLEJ
+ * ========================================== */
 
 void logger_rtc_read_time(void)
 {
     uint8_t buf[3];
-    // Read 3 bytes from address 0x00 (seconds, minutes, hours)
+    // Přečíst 3 byty (sec, min, hour) z RTC přes I2C
     twi_readfrom_mem_into(RTC_ADR, RTC_SEC_MEM, buf, 3);
 
     uint8_t sec  = bcd2dec(buf[0] & 0x7F);
     uint8_t min  = bcd2dec(buf[1]);
-    uint8_t hour = bcd2dec(buf[2] & 0x3F); // Mask 12/24h bit
+    uint8_t hour = bcd2dec(buf[2] & 0x3F); 
 
-    // Atomic write to global structure
+    // Atomický zápis do globální struktury
     uint8_t sreg = SREG; cli();
     g_time.hh = hour;
     g_time.mm = min;
@@ -114,23 +165,19 @@ void logger_rtc_read_time(void)
     SREG = sreg;
 }
 
-/* Draw data on LCD */
 void logger_display_draw(void)
 {
-    // 1. Clear flag (request handled)
+    // Vynulujeme flag, protože právě kreslíme
     flag_update_lcd = 0;
 
-    // --- Line 1: Header + Time ---
+    // --- ŘÁDEK 1: Hlavička + Čas + SD ikona ---
     lcd_i2c_gotoxy(0,0);
     
-    // SD recording indicator (*)
     char sd_icon = sd_logging ? '*' : ' '; 
-    
-    // Time formatting
     char timeStr[9];
     snprintf(timeStr, 9, "%02d:%02d:%02d", g_time.hh, g_time.mm, g_time.ss);
 
-    // Display based on selection
+    // Výpis názvu veličiny
     switch (lcdValue) {
         case 0: lcd_i2c_puts("TEMP   "); break;
         case 1: lcd_i2c_puts("PRESS  "); break;
@@ -138,43 +185,38 @@ void logger_display_draw(void)
         case 3: lcd_i2c_puts("LIGHT  "); break;
     }
     
-    // Print SD indicator and time on the rest of the line
+    // Výpis SD ikony a času
     lcd_i2c_putc(sd_icon);
     lcd_i2c_puts(timeStr);
 
-    // --- Line 2: Value ---
+    // --- ŘÁDEK 2: Hodnota + Jednotka ---
     lcd_i2c_gotoxy(0,1);
-    
-    // Clear line with spaces to remove artifacts from previous longer strings
-    // lcd_i2c_puts("                ");
-    // lcd_i2c_gotoxy(0,1);
-
     char valStr[16];
     
     switch (lcdValue)
     {
-        case 0: // Temperature
-            dtostrf(g_T, 6, 1, valStr); // float format
+        case 0: // Teplota
+            dtostrf(g_T, 6, 1, valStr); 
             lcd_i2c_puts(valStr); 
-            lcd_i2c_puts(" \xDF""C   "); // Added spaces to clear line
+            lcd_i2c_puts(" \xDF""C   "); // \xDF je znak stupně na LCD
             break;
 
-        case 1: // Pressure
+        case 1: // Tlak
             dtostrf(g_P, 7, 1, valStr);
             lcd_i2c_puts(valStr); 
             lcd_i2c_puts(" hPa  ");
             break;
 
-        case 2: // Humidity
+        case 2: // Vlhkost
             dtostrf(g_H, 6, 1, valStr);
             lcd_i2c_puts(valStr); 
             lcd_i2c_puts(" %    ");
             break;
 
-        case 3: // Light
+        case 3: // Světlo (celé číslo)
             sprintf(valStr, "%u", g_Light);
             lcd_i2c_puts(valStr);
-            lcd_i2c_puts(" %      "); // More spaces for shorter number
+            lcd_i2c_puts(" %      "); 
             break;
 
         default:
