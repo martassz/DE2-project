@@ -6,15 +6,22 @@
 #include "diskio.h"
 
 /* Definice pinů pro Arduino UNO/Nano (ATmega328P) */
+
+/* Port D */
+#define CS_PORT     PORTD
+#define CS_DDR      DDRD
+#define CS_PIN      (1<<4)   /* PD4 - Chip Select */
+
 /* Port B */
-#define CS_PIN      (1<<2)  /* D10 - Chip Select */
-#define MOSI_PIN    (1<<3)  /* D11 - MOSI */
-#define MISO_PIN    (1<<4)  /* D12 - MISO */
-#define SCK_PIN     (1<<5)  /* D13 - SCK */
+#define SPI_PORT    PORTB
+#define SPI_DDR     DDRB
+#define MOSI_PIN    (1<<3)   // PB3
+#define MISO_PIN    (1<<4)   // PB4
+#define SCK_PIN     (1<<5)   // PB5
 
 /* Makra pro ovládání CS pinu */
-#define CS_LOW()    PORTB &= ~CS_PIN
-#define CS_HIGH()   PORTB |= CS_PIN
+#define CS_LOW()    (CS_PORT &= ~CS_PIN)
+#define CS_HIGH()   (CS_PORT |= CS_PIN)
 
 /* MMC/SD command definitions */
 #define CMD0	(0x40+0)	/* GO_IDLE_STATE */
@@ -33,17 +40,16 @@
 
 static void spi_init (void)
 {
-	/* Nastaví MOSI, SCK a CS jako výstup, ostatní jako vstup */
-	DDRB |= MOSI_PIN | SCK_PIN | CS_PIN;
-	/* Nastaví MISO jako vstup (pro jistotu, defaultně je vstup) */
-	DDRB &= ~MISO_PIN;
+    /* Nastavení SPI pinů */
+    SPI_DDR |= MOSI_PIN | SCK_PIN;   // MOSI, SCK výstup
+    SPI_DDR &= ~MISO_PIN;            // MISO vstup
 
-	/* Povolí SPI, Master mode, clock rate fck/64 */
-	/* SPCR = SPI Control Register */
-	/* SPE = SPI Enable, MSTR = Master, SPR1 = Clock rate select */
-	SPCR = (1<<SPE) | (1<<MSTR) | (1<<SPR1);
-	
-	CS_HIGH(); /* CS do klidu (High) */
+    /* Nastavení CS pinu */
+    CS_DDR |= CS_PIN;
+    CS_HIGH();
+
+    /* Zapnutí SPI v master režimu */
+    SPCR = (1<<SPE) | (1<<MSTR) | (1<<SPR1);
 }
 
 static void xmit_spi (BYTE d)

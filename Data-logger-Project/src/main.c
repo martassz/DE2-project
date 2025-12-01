@@ -105,12 +105,12 @@ int main(void) {
     /*
     ds1302_time_t t_setup;
     t_setup.sec = 0;
-    t_setup.min = 39;
-    t_setup.hour = 13;
+    t_setup.min = 27;
+    t_setup.hour = 0;
     t_setup.date = 1;
-    t_setup.month = 1;
-    t_setup.day = 1;
-    t_setup.year = 24;
+    t_setup.month = 12;
+    t_setup.day = 2;
+    t_setup.year = 25;
     ds1302_set_time(&t_setup);
     uart_puts("Time set!\r\n");
     */

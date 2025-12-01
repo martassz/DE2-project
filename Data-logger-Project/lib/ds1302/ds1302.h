@@ -18,20 +18,20 @@
 /* Allow user to override port/DDR/PIN at compile time */
 #ifndef DS1302_PORT
 #include <avr/io.h>
-#define DS1302_PORT PORTC
-#define DS1302_DDR  DDRC
-#define DS1302_PIN  PINC
+#define DS1302_PORT PORTB
+#define DS1302_DDR  DDRB
+#define DS1302_PIN  PINB
 #endif
 
 /* Default pin numbers (can be changed before include) */
 #ifndef DS1302_CE_PIN
-#define DS1302_CE_PIN   PC1
+#define DS1302_CE_PIN   PB2
 #endif
 #ifndef DS1302_IO_PIN
-#define DS1302_IO_PIN   PC2
+#define DS1302_IO_PIN   PB1
 #endif
 #ifndef DS1302_SCLK_PIN
-#define DS1302_SCLK_PIN PC3
+#define DS1302_SCLK_PIN PB0
 #endif
 
 /* Register/command addresses (LSB-first addressing scheme used by device) */
