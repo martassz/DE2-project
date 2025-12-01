@@ -141,7 +141,6 @@ int main(void) {
     bme280_init();
     
     uart_puts("Sensors: Init Light Sensor...\r\n");
-    // FIXED: Changed from 3 to 0 based on your attached file
     lightSensor_init(0); // Analog pin A0
     lightSensor_setCalibration(10, 750); 
 

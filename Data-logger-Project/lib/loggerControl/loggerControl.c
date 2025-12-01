@@ -18,13 +18,13 @@
 #include "sdlog.h"   
 
 /* --- KONFIGURACE PINŮ ENKODÉRU (PORTC) --- */
-#define ENC_SW   PC1
-#define ENC_DT   PC2
-#define ENC_CLK  PC3
+#define ENC_SW   PD7
+#define ENC_DT   PD6
+#define ENC_CLK  PD5
 
-#define ENC_PORT_REG  PORTC
-#define ENC_DDR_REG   DDRC
-#define ENC_PIN_REG   PINC
+#define ENC_PORT_REG  PORTD
+#define ENC_DDR_REG   DDRD
+#define ENC_PIN_REG   PIND
 
 /* --- DEFINICE ADRES RTC (které chyběly) --- */
 #define RTC_ADR     0x68
