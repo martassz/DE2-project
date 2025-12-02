@@ -1,321 +1,261 @@
 /*-----------------------------------------------------------------------*/
-/* Low level disk I/O module for Petit FatFs (AVR/Arduino)               */
+/* Low level disk I/O module for ATmega328P (PlatformIO) - DEBUG VERZE   */
 /*-----------------------------------------------------------------------*/
 
 #include <avr/io.h>
 #include "diskio.h"
-#include <util/delay.h>
+#include "pff.h"
+#include "uart.h" // Přidáno pro debug výpisy
 
-/* Definice pinů pro Arduino UNO/Nano (ATmega328P) */
+/* --- DEFINICE PINŮ --- */
+#define CS_PORT PORTD
+#define CS_DDR  DDRD
+#define CS_PIN  PD4
 
-/* Port D */
-#define CS_PORT     PORTD
-#define CS_DDR      DDRD
-#define CS_PIN      (1<<4)   /* PD4 - Chip Select */
+#define SPI_PORT PORTB
+#define SPI_DDR  DDRB
+#define SPI_SCK  PB5
+#define SPI_MOSI PB3
+#define SPI_MISO PB4
+#define SPI_SS   PB2
 
-/* Port B */
-#define SPI_PORT    PORTB
-#define SPI_DDR     DDRB
-#define MOSI_PIN    (1<<3)   // PB3
-#define MISO_PIN    (1<<4)   // PB4
-#define SCK_PIN     (1<<5)   // PB5
+/* --- PŘÍKAZY PRO SD KARTU --- */
+#define CMD0    (0)         /* GO_IDLE_STATE */
+#define CMD1    (1)         /* SEND_OP_COND (MMC) */
+#define CMD8    (8)         /* SEND_IF_COND */
+#define CMD12   (12)        /* STOP_TRANSMISSION */
+#define CMD16   (16)        /* SET_BLOCKLEN */
+#define CMD17   (17)        /* READ_SINGLE_BLOCK */
+#define CMD24   (24)        /* WRITE_BLOCK */
+#define CMD55   (55)        /* APP_CMD */
+#define CMD58   (58)        /* READ_OCR */
+#define ACMD41  (0x80+41)   /* SEND_OP_COND (SDC) */
 
-/* Makra pro ovládání CS pinu */
-#define CS_LOW()    (CS_PORT &= ~CS_PIN)
-#define CS_HIGH()   (CS_PORT |= CS_PIN)
+/* --- TYPY KARET --- */
+#define CT_MMC      0x01
+#define CT_SD1      0x02
+#define CT_SD2      0x04
+#define CT_BLOCK    0x08
 
-/* MMC/SD command definitions */
-#define CMD0	(0x40+0)	/* GO_IDLE_STATE */
-#define CMD1	(0x40+1)	/* SEND_OP_COND */
-#define ACMD41	(0xC0+41)	/* SEND_OP_COND (SDC) */
-#define CMD8	(0x40+8)	/* SEND_IF_COND */
-#define CMD12   (0x40+12)   /* STOP_TRANSMISSION */
-#define CMD16	(0x40+16)	/* SET_BLOCKLEN */
-#define CMD17	(0x40+17)	/* READ_SINGLE_BLOCK */
-#define CMD24	(0x40+24)	/* WRITE_BLOCK */
-#define CMD55	(0x40+55)	/* APP_CMD */
-#define CMD58	(0x40+58)	/* READ_OCR */
+/* --- MAKRA --- */
+#define SELECT()    CS_PORT &= ~_BV(CS_PIN)
+#define DESELECT()  CS_PORT |=  _BV(CS_PIN)
 
-/*-----------------------------------------------------------------------*/
-/* SPI Functions                                                         */
-/*-----------------------------------------------------------------------*/
+static BYTE CardType;
 
-static void spi_init (void)
-{
-    /* Nastavení SPI pinů */
-    SPI_DDR |= MOSI_PIN | SCK_PIN;   // MOSI, SCK výstup
-    SPI_DDR &= ~MISO_PIN;            // MISO vstup
-
-    /* Nastavení CS pinu */
-    CS_DDR |= CS_PIN;
-    CS_HIGH();
-
-    /* Zapnutí SPI v master režimu */
-    SPCR = (1<<SPE) | (1<<MSTR) | (1<<SPR1);
+/* --- POMOCNÁ FUNKCE PRO VÝPIS HEX ČÍSLA --- */
+void debug_hex(BYTE h) {
+    BYTE d = h >> 4;
+    uart_putc(d > 9 ? d + 55 : d + '0');
+    d = h & 0x0F;
+    uart_putc(d > 9 ? d + 55 : d + '0');
+    uart_putc(' ');
 }
 
-static void xmit_spi (BYTE d)
+/* --- SPI FUNKCE --- */
+static void spi_init(void)
 {
-	SPDR = d; /* Vloží data do registru */
-	loop_until_bit_is_set(SPSR, SPIF); /* Čeká na dokončení přenosu */
+    CS_DDR |= _BV(CS_PIN);
+    DESELECT();
+    
+    // Nastavíme MOSI, SCK a SS jako výstup
+    SPI_DDR |= _BV(SPI_MOSI) | _BV(SPI_SCK) | _BV(SPI_SS);
+    // MISO je automaticky vstup
+    
+    SPCR = _BV(SPE) | _BV(MSTR) | _BV(SPR1); // f_osc/64
+    SPSR = 0; 
 }
 
-static BYTE rcv_spi (void)
+static void xmit_spi(BYTE d)
 {
-	SPDR = 0xFF; /* Pošle dummy data pro vyčtení */
-	loop_until_bit_is_set(SPSR, SPIF);
-	return SPDR;
+    SPDR = d;
+    while (!(SPSR & _BV(SPIF)));
 }
 
-/*-----------------------------------------------------------------------*/
-/* Helper Functions                                                      */
-/*-----------------------------------------------------------------------*/
-
-/* Čeká na připravenost karty */
-static BYTE wait_ready (void)
+static BYTE rcv_spi(void)
 {
-	BYTE res;
-	UINT tmr;
-
-	for (tmr = 5000; tmr; tmr--) {
-		res = rcv_spi();
-		if (res == 0xFF) return res;
-		_delay_us(100); /* Zpoždění cca 100us */
-	}
-	return 0;
+    SPDR = 0xFF;
+    while (!(SPSR & _BV(SPIF)));
+    return SPDR;
 }
 
-/* Odeslání příkazu kartě */
-static BYTE send_cmd (
-	BYTE cmd,		/* Index příkazu */
-	DWORD arg		/* Argument (32 bitů) */
-)
+/* --- SD FUNKCE --- */
+static BYTE send_cmd (BYTE cmd, DWORD arg)
 {
-	BYTE n, res;
+    BYTE n, res;
+    if (cmd & 0x80) {
+        cmd &= 0x7F;
+        res = send_cmd(CMD55, 0);
+        if (res > 1) return res;
+    }
+    DESELECT();
+    rcv_spi();
+    SELECT();
+    rcv_spi();
+    xmit_spi(0x40 | cmd);
+    xmit_spi((BYTE)(arg >> 24));
+    xmit_spi((BYTE)(arg >> 16));
+    xmit_spi((BYTE)(arg >> 8));
+    xmit_spi((BYTE)arg);
+    
+    n = 0x01;
+    if (cmd == CMD0) n = 0x95;
+    if (cmd == CMD8) n = 0x87;
+    xmit_spi(n);
 
-	if (cmd & 0x80) {	/* ACMD<n> je posloupnost CMD55 a CMD<n> */
-		cmd &= 0x7F;
-		res = send_cmd(CMD55, 0);
-		if (res > 1) return res;
-	}
-
-	/* Select the card */
-	CS_LOW();
-	rcv_spi();
-
-	/* Send command packet */
-	xmit_spi(cmd);						/* Command */
-	xmit_spi((BYTE)(arg >> 24));		/* Argument[31..24] */
-	xmit_spi((BYTE)(arg >> 16));		/* Argument[23..16] */
-	xmit_spi((BYTE)(arg >> 8));			/* Argument[15..8] */
-	xmit_spi((BYTE)arg);				/* Argument[7..0] */
-	
-	n = 0x01;							/* Dummy CRC + Stop */
-	if (cmd == CMD0) n = 0x95;			/* Valid CRC for CMD0(0) */
-	if (cmd == CMD8) n = 0x87;			/* Valid CRC for CMD8(0x1AA) */
-	xmit_spi(n);
-
-	/* Receive command response */
-	if (cmd == CMD12) rcv_spi();		/* Skip a stuff byte when stop reading */
-	n = 10;								/* Wait for a valid response in timeout of 10 attempts */
-	do
-		res = rcv_spi();
-	while ((res & 0x80) && --n);
-
-	return res;			/* Return with the response value */
+    if (cmd == CMD12) rcv_spi();
+    n = 10;
+    do res = rcv_spi();
+    while ((res & 0x80) && --n);
+    return res;
 }
 
 /*-----------------------------------------------------------------------*/
-/* Initialize Disk Drive                                                 */
+/* Initialize Disk Drive (DEBUG VERZE)                                   */
 /*-----------------------------------------------------------------------*/
-
 DSTATUS disk_initialize (void)
 {
-	BYTE n, cmd, ty, ocr[4];
-	UINT tmr;
+    BYTE n, cmd, ty, ocr[4];
+    UINT tmr;
 
-#if _USE_WRITE
-	if (CardType && mmc_get_csd(CSD) == 0) return 0; // Check write protection if needed
-#endif
+    uart_puts("DISK_INIT: Start\r\n");
+    spi_init();
+    
+    // Přidáme extra delay pro stabilizaci napájení karty
+    for(volatile long i=0; i<10000; i++); 
 
-	spi_init(); /* Inicializace SPI hardware */
+    DESELECT();
+    // Posíláme 80+ dummy clocks, aby se karta probrala
+    for (n = 100; n; n--) rcv_spi();
 
-	/* PFF vyžaduje inicializační sekvenci: 80 dummy clocků s CS High */
-	CS_HIGH();
-	for (n = 10; n; n--) rcv_spi();
+    ty = 0;
+    
+    // Zkusíme CMD0 (Go Idle State)
+    uart_puts("CMD0... ");
+    n = send_cmd(CMD0, 0);
+    debug_hex(n); // Vypíše návratový kód (očekáváme 01)
+    uart_puts("\r\n");
 
-	ty = 0;
-	if (send_cmd(CMD0, 0) == 1) {			/* Enter Idle state */
-		if (send_cmd(CMD8, 0x1AA) == 1) {	/* SDv2? */
-			for (n = 0; n < 4; n++) ocr[n] = rcv_spi();
-			if (ocr[2] == 0x01 && ocr[3] == 0xAA) {	/* The card can work at vdd range of 2.7-3.6V */
-				for (tmr = 10000; tmr && send_cmd(ACMD41, 1UL << 30); tmr--) _delay_us(100);	/* Wait for leaving idle state (ACMD41 with HCS bit) */
-				if (tmr && send_cmd(CMD58, 0) == 0) {		/* Check CCS bit in the OCR */
-					for (n = 0; n < 4; n++) ocr[n] = rcv_spi();
-					ty = (ocr[0] & 0x40) ? 6 : 12; // SDv2 (Block addr) : SDv2 (Byte addr)
-				}
-			}
-		} else {							/* SDv1 or MMCv3 */
-			if (send_cmd(ACMD41, 0) <= 1) 	{
-				ty = 2; cmd = ACMD41;	/* SDv1 */
-			} else {
-				ty = 1; cmd = CMD1;		/* MMCv3 */
-			}
-			for (tmr = 10000; tmr && send_cmd(cmd, 0); tmr--) _delay_us(100);	/* Wait for leaving idle state */
-			if (!tmr || send_cmd(CMD16, 512) != 0)	/* Set R/W block length to 512 */
-				ty = 0;
-		}
-	}
-	
-	CS_HIGH();
-	rcv_spi();
+    if (n == 1) {
+        // Zkusíme CMD8 (Check Voltage)
+        uart_puts("CMD8... ");
+        if (send_cmd(CMD8, 0x1AA) == 1) {
+            uart_puts("OK (SDv2)\r\n");
+            for (n = 0; n < 4; n++) ocr[n] = rcv_spi();
+            debug_hex(ocr[2]); debug_hex(ocr[3]); uart_puts("\r\n"); // Očekáváme 01 AA
+            
+            if (ocr[2] == 0x01 && ocr[3] == 0xAA) {
+                uart_puts("ACMD41 wait... ");
+                // Čekáme na dokončení inicializace
+                for (tmr = 20000; tmr && send_cmd(ACMD41, 1UL << 30); tmr--) ;
+                if (tmr) uart_puts("OK\r\n"); else uart_puts("TIMEOUT\r\n");
+                
+                if (tmr && send_cmd(CMD58, 0) == 0) {
+                    for (n = 0; n < 4; n++) ocr[n] = rcv_spi();
+                    ty = (ocr[0] & 0x40) ? CT_SD2 | CT_BLOCK : CT_SD2;
+                    uart_puts("Card Type: "); debug_hex(ty); uart_puts("\r\n");
+                }
+            }
+        } else {
+            uart_puts("Fail/OldSD\r\n");
+            // Starší karty (SDv1 nebo MMC)
+            if (send_cmd(ACMD41, 0) <= 1) {
+                ty = CT_SD1; cmd = ACMD41;
+            } else {
+                ty = CT_MMC; cmd = CMD1;
+            }
+            for (tmr = 20000; tmr && send_cmd(cmd, 0); tmr--) ;
+            if (!tmr || send_cmd(CMD16, 512) != 0) ty = 0;
+        }
+    } else {
+        uart_puts("CMD0 Failed. Check wiring!\r\n");
+    }
 
-	return ty ? 0 : STA_NOINIT;
+    CardType = ty;
+    DESELECT();
+    rcv_spi();
+    
+    if (ty) {
+        SPCR &= ~_BV(SPR1);
+        SPCR &= ~_BV(SPR0);
+        SPSR |= _BV(SPI2X);
+        uart_puts("Init Success.\r\n");
+    } else {
+        uart_puts("Init Failed.\r\n");
+    }
+
+    return ty ? 0 : STA_NOINIT;
 }
 
 /*-----------------------------------------------------------------------*/
 /* Read Partial Sector                                                   */
 /*-----------------------------------------------------------------------*/
-
-DRESULT disk_readp (
-	BYTE* buff,		/* Pointer to the destination object */
-	DWORD sector,	/* Sector number (LBA) */
-	UINT offset,	/* Offset in the sector */
-	UINT count		/* Byte count (bit15:destination) */
-)
+DRESULT disk_readp (BYTE* buff, DWORD sector, UINT offset, UINT count)
 {
-	DRESULT res;
-	BYTE d;
-	UINT bc, tmr;
+    DRESULT res;
+    BYTE rc;
+    UINT bc;
 
-	if (!(count)) return RES_PARERR;
+    if (!(count)) return RES_PARERR;
+    if (!(CardType & CT_BLOCK)) sector *= 512;
 
-	/* Convert LBA to byte address if needed (SDSC cards) */
-	// Note: In typical PFF implementation we simplify assumption or check type. 
-	// Standard PFF usually handles this inside logic or assumes Block Addressing for modern cards.
-	// For full robustness, card type detected in init should be stored in a static global variable.
-	// Assuming SDHC (Block addressing) for simplicity or standard SDSC (byte addr * 512).
-	// To be perfectly safe, send_cmd logic usually handles addressing based on card type.
-	// Here we use standard CMD17.
-    // If you have SDSC card (old <2GB), you might need to multiply sector * 512.
-    // But most modern libs assume block addressing or handle it. 
-    // Let's assume the user is using a somewhat modern card or the upper layer handles mapping.
-    // Actually, CMD17 argument depends on CCS bit (Card Capacity Status).
-    // Simpler hack: Try sending sector normally.
+    res = RES_ERROR;
+    if (send_cmd(CMD17, sector) == 0) {
+        bc = 30000;
+        do { rc = rcv_spi(); } while (rc == 0xFF && --bc);
 
-	if (send_cmd(CMD17, sector) == 0) {		/* READ_SINGLE_BLOCK */
-
-		tmr = 1000;
-		do {							/* Wait for data packet in timeout of 100ms */
-			_delay_us(100);
-			d = rcv_spi();
-		} while (d == 0xFF && --tmr);
-
-		if (d == 0xFE) {				/* A data packet arrived */
-			bc = 512 + 2 - offset - count;	/* Number of bytes to skip */
-
-			/* Skip leading bytes */
-			while (offset--) rcv_spi();
-
-			/* Receive a part of the sector */
-			do {
-				d = rcv_spi();
-				*buff++ = d;
-			} while (--count);
-
-			/* Skip trailing bytes and CRC */
-			do rcv_spi(); while (--bc);
-
-			res = RES_OK;
-		} else {
-			res = RES_ERROR;
-		}
-	} else {
-		res = RES_ERROR;
-	}
-
-	CS_HIGH();
-	rcv_spi();
-
-	return res;
+        if (rc == 0xFE) {
+            bc = 512 + 2 - offset - count;
+            while (offset--) rcv_spi();
+            if (buff) {
+                do { *buff++ = rcv_spi(); } while (--count);
+            } else {
+                do { rcv_spi(); } while (--count);
+            }
+            do rcv_spi(); while (--bc);
+            res = RES_OK;
+        }
+    }
+    DESELECT();
+    rcv_spi();
+    return res;
 }
 
-/* ==== Write Sector ==== */
-
-DRESULT disk_writep (
-	const BYTE* buff,	/* Pointer to the data to be sent, NULL:Initiate/Finalize */
-	DWORD sc				/* Sector number or byte count */
-)
+/*-----------------------------------------------------------------------*/
+/* Write Partial Sector                                                  */
+/*-----------------------------------------------------------------------*/
+DRESULT disk_writep (const BYTE* buff, DWORD sc)
 {
-	static UINT bytes_left = 0;   /* bytes remaining to complete 512-byte sector */
-	BYTE resp;
-	UINT i;
+    DRESULT res;
+    UINT bc;
+    static UINT wc;
 
-	/* Initiate write: buff==NULL && sc!=0 -> sc is sector number */
-	if (buff == 0) {
-		if (sc) {
-			/* start sector write */
-			/* select card and send CMD24 (write single block) */
-			if (send_cmd(CMD24, sc) != 0) {
-				CS_HIGH();
-				return RES_ERROR;
-			}
-
-			/* send one byte to give card time (typical) */
-			rcv_spi();
-
-			/* data token: 0xFE (start block) */
-			xmit_spi(0xFE);
-
-			/* prepare counter */
-			bytes_left = 512;
-			return RES_OK;
-		} else {
-			/* finalise write: buff==NULL && sc==0 */
-			/* send 2-byte dummy CRC */
-			xmit_spi(0xFF);
-			xmit_spi(0xFF);
-
-			/* receive data response token */
-			resp = rcv_spi();
-			if ((resp & 0x1F) != 0x05) { /* 0x05 = 0b00101 = data accepted */
-				CS_HIGH();
-				rcv_spi();
-				return RES_ERROR;
-			}
-
-			/* wait until card is not busy (0xFF) */
-			{
-				UINT tmr = 50000; /* generous timeout */
-				while (tmr--) {
-					if (rcv_spi() == 0xFF) break;
-				}
-				if (tmr == 0) {
-					CS_HIGH();
-					return RES_ERROR;
-				}
-			}
-
-			/* release CS and give a final clock */
-			CS_HIGH();
-			rcv_spi();
-			return RES_OK;
-		}
-	}
-
-	/* Data write: buff != NULL, sc = byte count (<=512) */
-	{
-		UINT cnt = (UINT)sc;
-		/* protect against overruns */
-		if (cnt > bytes_left) return RES_PARERR;
-
-		for (i = 0; i < cnt; i++) {
-			xmit_spi(buff[i]);
-		}
-		bytes_left -= cnt;
-
-		/* If caller writes exactly 512 bytes in total, just return OK;
-		   finalization will be done by disk_writep(NULL,0) called by PFF */
-		return RES_OK;
-	}
+    res = RES_ERROR;
+    if (buff) {
+        bc = (UINT)sc;
+        while (bc && wc) {
+            xmit_spi(*buff++);
+            wc--; bc--;
+        }
+        res = RES_OK;
+    } else {
+        if (sc) {
+            if (!(CardType & CT_BLOCK)) sc *= 512;
+            if (send_cmd(CMD24, sc) == 0) {
+                xmit_spi(0xFF); xmit_spi(0xFE);
+                wc = 512;
+                res = RES_OK;
+            }
+        } else {
+            bc = wc + 2;
+            while (bc--) xmit_spi(0);
+            if ((rcv_spi() & 0x1F) == 0x05) {
+                for (bc = 65000; rcv_spi() != 0xFF && bc; bc--) ;
+                if (bc) res = RES_OK;
+            }
+            DESELECT();
+            rcv_spi();
+        }
+    }
+    return res;
 }
