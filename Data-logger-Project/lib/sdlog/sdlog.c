@@ -1,6 +1,7 @@
 /*
  * Buffered CSV logging to SD card.
- * - Uses weak low-level wrappers: sdcard_init/open_append/write/close
+ * - Uses low-level SPI for SD initialization
+ * - Other SD write/open/close functions remain weak
  */
 
 #include "sdlog.h"
@@ -11,9 +12,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <uart.h>   /* for debug prints (uart_puts) */
+#include <uart.h>
 #include "loggerControl.h"
 #include "ds1302.h"
+#include <stdbool.h>
 
 /* Module state */
 volatile uint8_t flag_sd_toggle = 0;       /* set by encoder code to request start/stop */
@@ -22,153 +24,137 @@ volatile bool sd_logging = false;          /* true while logging is active */
 static char sd_buffer[SD_BUFFER_SIZE];
 static size_t sd_buf_pos = 0;
 
-/* Forward declarations of low-level wrappers (weak defaults below) */
-int sdcard_init(void);
-int sdcard_open_append(const char *filename);
-int sdcard_write(const void *buf, size_t len);
-void sdcard_close(void);
+/* --- SD SPI Pins --- */
+#define CS_PORT PORTD
+#define CS_DDR  DDRD
+#define CS_PIN  (1<<4)   // PD4
+#define SPI_DDR DDRB
+#define SPI_PORT PORTB
+#define MOSI_PIN (1<<3)  // PB3
+#define MISO_PIN (1<<4)  // PB4
+#define SCK_PIN  (1<<5)  // PB5
+#define CS_HIGH() (CS_PORT|=CS_PIN)
+#define CS_LOW()  (CS_PORT&=~CS_PIN)
 
-/* Helper: basic UART debug print (safe, simple) */
-static void dbg_print(const char *s)
+/* --- SPI helpers --- */
+static void spi_init(void)
 {
-    /* minimal newline */
-    uart_puts(s);
-    uart_puts("\r\n");
+    SPI_DDR |= MOSI_PIN | SCK_PIN | (1<<PB2); // SS must be output
+    SPI_DDR &= ~MISO_PIN;
+    CS_DDR |= CS_PIN; CS_HIGH();
+
+    SPCR = (1<<SPE) | (1<<MSTR) | (1<<SPR1) | (1<<SPR0); // f/128
+    SPSR &= ~(1<<SPI2X);
 }
 
-/* Timestamp helper — fallback to seconds since power-on using RTC */
+static uint8_t spi_xfer(uint8_t b)
+{
+    SPDR = b; while(!(SPSR & (1<<SPIF))); return SPDR;
+}
+
+static void send_dummy_clocks(void)
+{
+    CS_HIGH();
+    for(uint8_t i=0;i<10;i++) spi_xfer(0xFF);
+}
+
+static uint8_t send_cmd(uint8_t cmd, uint32_t arg, uint8_t crc)
+{
+    uint8_t r;
+    CS_LOW(); spi_xfer(0xFF);
+    spi_xfer(0x40 | cmd);
+    spi_xfer(arg>>24); spi_xfer(arg>>16); spi_xfer(arg>>8); spi_xfer(arg);
+    spi_xfer(crc);
+    for(uint8_t i=0;i<20;i++) { r=spi_xfer(0xFF); if(!(r&0x80)) break; }
+    CS_HIGH(); spi_xfer(0xFF);
+    return r;
+}
+
+/* SD card init sequence */
+int __attribute__((weak)) sdcard_init(void)
+{
+    spi_init();
+    send_dummy_clocks();
+
+    uint8_t r;
+    // CMD0 - reset card
+    r = send_cmd(0,0,0x95);
+    if(r != 1) { uart_puts("SD: CMD0 failed\r\n"); return -1; }
+
+    // CMD8 - check SDv2
+    r = send_cmd(8,0x1AA,0x87);
+    if(r != 1) uart_puts("SD: SDv1 or MMC detected\r\n");
+    else uart_puts("SD: SDv2 detected\r\n");
+
+    // ACMD41 - wait until ready
+    for(uint16_t i=0;i<5000;i++)
+    {
+        r = send_cmd(55,0,0x65);
+        if(r>1) continue;
+        r = send_cmd(41,1UL<<30,0x77);
+        if(r==0) break;
+    }
+    if(r != 0) { uart_puts("SD: ACMD41 timeout\r\n"); return -2; }
+
+    // CMD58 - read OCR
+    r = send_cmd(58,0,0x00);
+    if(r != 0) { uart_puts("SD: CMD58 failed\r\n"); return -3; }
+
+    uart_puts("SD: Initialization OK\r\n");
+    return 0;
+}
+
+/* --- Buffer management and CSV logging --- */
+static void dbg_print(const char *s) { uart_puts(s); uart_puts("\r\n"); }
+
 static void format_timestamp(char *buf, size_t len)
 {
-    snprintf(buf, len, "%02u:%02u:%02u",
-             (unsigned)g_time.hh,
-             (unsigned)g_time.mm,
-             (unsigned)g_time.ss);
+    snprintf(buf,len,"%02u:%02u:%02u",
+             (unsigned)g_time.hh,(unsigned)g_time.mm,(unsigned)g_time.ss);
 }
 
-/* Initialize module (optional) */
 int sd_log_init(void)
 {
     sd_buf_pos = 0;
     flag_sd_toggle = 0;
-    /* sd_logging left unchanged (stopped by default) */
     return 0;
 }
 
-/* Append CSV line to RAM buffer and flush to SD if conditions met */
-/* Now includes Light (L) */
 void sd_log_append_line(float T, float P, float H, uint16_t L)
 {
-    char line[64];
-    char ts[24];
-
-    format_timestamp(ts, sizeof(ts));
-    // Added %.0u for light (integer percentage)
-    int n = snprintf(line, sizeof(line), "%s,%.2f,%.2f,%.2f,%u\n", ts, T, P, H, L);
-    if (n <= 0) return;
-
+    char line[64]; char ts[24];
+    format_timestamp(ts,sizeof(ts));
+    int n = snprintf(line,sizeof(line),"%s,%.2f,%.2f,%.2f,%u\n",ts,T,P,H,L);
+    if(n<=0) return;
     size_t ln = (size_t)n;
-
-    /* If single line is larger than buffer capacity, write directly */
-    if (ln >= SD_BUFFER_SIZE)
-    {
-        if (sd_logging)
-        {
-            int w = sdcard_write(line, ln);
-            (void)w;
-        }
-        return;
-    }
-
-    /* If not enough space in buffer, flush it first */
-    if (sd_buf_pos + ln >= SD_BUFFER_SIZE)
-    {
-        if (sd_logging && sd_buf_pos > 0)
-        {
-            sdcard_write(sd_buffer, sd_buf_pos);
-        }
-        sd_buf_pos = 0;
-    }
-
-    /* Copy line into buffer (interrupts briefly disabled during pointer update) */
-    memcpy(&sd_buffer[sd_buf_pos], line, ln);
-    sd_buf_pos += ln;
-
-    /* Flush if threshold reached */
-    if (sd_logging && sd_buf_pos >= SD_FLUSH_THRESHOLD)
-    {
-        sdcard_write(sd_buffer, sd_buf_pos);
-        sd_buf_pos = 0;
-    }
+    if(ln>=SD_BUFFER_SIZE) { if(sd_logging) sdcard_write(line,ln); return; }
+    if(sd_buf_pos + ln >= SD_BUFFER_SIZE) { if(sd_logging && sd_buf_pos>0) sdcard_write(sd_buffer,sd_buf_pos); sd_buf_pos=0; }
+    memcpy(&sd_buffer[sd_buf_pos],line,ln); sd_buf_pos+=ln;
+    if(sd_logging && sd_buf_pos>=SD_FLUSH_THRESHOLD) { sdcard_write(sd_buffer,sd_buf_pos); sd_buf_pos=0; }
 }
 
-/* Start logging: init SD, open file and write header */
 int sd_log_start(void)
 {
-    if (sd_logging) return 0;
-
-    if (sdcard_init() != 0)
-    {
-        dbg_print("SD init failed");
-        return -1;
-    }
+    if(sd_logging) return 0;
+    if(sdcard_init()!=0) { dbg_print("SD init failed"); return -1; }
 
     char fname[20];
-    snprintf(fname, sizeof(fname), "%02u%02u_LOG.TXT",
-            (unsigned)g_time.hh,
-            (unsigned)g_time.mm);
+    snprintf(fname,sizeof(fname),"%02u%02u_LOG.TXT",(unsigned)g_time.hh,(unsigned)g_time.mm);
 
-    if (sdcard_open_append(fname) != 0)
-    {
-        dbg_print("SD open failed");
-        return -2;
-    }
+    if(sdcard_open_append(fname)!=0) { dbg_print("SD open failed"); return -2; }
 
-    // Updated header to include Light
     const char *hdr = "time,temperature,pressure,humidity,light\n";
-    (void)sdcard_write(hdr, strlen(hdr));
+    sdcard_write(hdr,strlen(hdr));
 
-    sd_buf_pos = 0;
-    sd_logging = true;
+    sd_buf_pos = 0; sd_logging = true;
     dbg_print("SD logging started");
     return 0;
 }
 
-/* Stop logging: flush and close */
 void sd_log_stop(void)
 {
-    if (!sd_logging) return;
-
-    if (sd_buf_pos > 0)
-    {
-        sdcard_write(sd_buffer, sd_buf_pos);
-        sd_buf_pos = 0;
-    }
-
-    sdcard_close();
-    sd_logging = false;
+    if(!sd_logging) return;
+    if(sd_buf_pos>0) { sdcard_write(sd_buffer,sd_buf_pos); sd_buf_pos=0; }
+    sdcard_close(); sd_logging=false;
     dbg_print("SD logging stopped");
-}
-
-int __attribute__((weak)) sdcard_init(void)
-{
-    (void)0;
-    return -1;
-}
-
-int __attribute__((weak)) sdcard_open_append(const char *filename)
-{
-    (void)filename;
-    return -1;
-}
-
-int __attribute__((weak)) sdcard_write(const void *buf, size_t len)
-{
-    (void)buf;
-    (void)len;
-    return -1;
-}
-
-void __attribute__((weak)) sdcard_close(void)
-{
-    /* noop */
 }

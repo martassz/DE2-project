@@ -4,6 +4,7 @@
 
 #include <avr/io.h>
 #include "diskio.h"
+#include <util/delay.h>
 
 /* Definice pinů pro Arduino UNO/Nano (ATmega328P) */
 
@@ -28,6 +29,7 @@
 #define CMD1	(0x40+1)	/* SEND_OP_COND */
 #define ACMD41	(0xC0+41)	/* SEND_OP_COND (SDC) */
 #define CMD8	(0x40+8)	/* SEND_IF_COND */
+#define CMD12   (0x40+12)   /* STOP_TRANSMISSION */
 #define CMD16	(0x40+16)	/* SET_BLOCKLEN */
 #define CMD17	(0x40+17)	/* READ_SINGLE_BLOCK */
 #define CMD24	(0x40+24)	/* WRITE_BLOCK */
@@ -238,20 +240,82 @@ DRESULT disk_readp (
 	return res;
 }
 
-/*-----------------------------------------------------------------------*/
-/* Write Partial Sector (Vypnuto v pffconf.h, ale kostra je tu)          */
-/*-----------------------------------------------------------------------*/
+/* ==== Write Sector ==== */
 
 DRESULT disk_writep (
-	BYTE* buff,		/* Pointer to the data to be written, NULL:Initiate/Finalize write operation */
-	DWORD sc		/* Sector number (LBA) or Number of bytes to send */
+	const BYTE* buff,	/* Pointer to the data to be sent, NULL:Initiate/Finalize */
+	DWORD sc				/* Sector number or byte count */
 )
 {
-	DRESULT res = RES_ERROR;
+	static UINT bytes_left = 0;   /* bytes remaining to complete 512-byte sector */
+	BYTE resp;
+	UINT i;
 
-    /* PFF ve tvém nastavení (pffconf.h) má PF_USE_WRITE = 0, takže tato funkce
-       by se neměla volat. Pokud ji zapneš, je potřeba implementovat CMD24.
-       Zde je pouze placeholder. */
+	/* Initiate write: buff==NULL && sc!=0 -> sc is sector number */
+	if (buff == 0) {
+		if (sc) {
+			/* start sector write */
+			/* select card and send CMD24 (write single block) */
+			if (send_cmd(CMD24, sc) != 0) {
+				CS_HIGH();
+				return RES_ERROR;
+			}
 
-	return res;
+			/* send one byte to give card time (typical) */
+			rcv_spi();
+
+			/* data token: 0xFE (start block) */
+			xmit_spi(0xFE);
+
+			/* prepare counter */
+			bytes_left = 512;
+			return RES_OK;
+		} else {
+			/* finalise write: buff==NULL && sc==0 */
+			/* send 2-byte dummy CRC */
+			xmit_spi(0xFF);
+			xmit_spi(0xFF);
+
+			/* receive data response token */
+			resp = rcv_spi();
+			if ((resp & 0x1F) != 0x05) { /* 0x05 = 0b00101 = data accepted */
+				CS_HIGH();
+				rcv_spi();
+				return RES_ERROR;
+			}
+
+			/* wait until card is not busy (0xFF) */
+			{
+				UINT tmr = 50000; /* generous timeout */
+				while (tmr--) {
+					if (rcv_spi() == 0xFF) break;
+				}
+				if (tmr == 0) {
+					CS_HIGH();
+					return RES_ERROR;
+				}
+			}
+
+			/* release CS and give a final clock */
+			CS_HIGH();
+			rcv_spi();
+			return RES_OK;
+		}
+	}
+
+	/* Data write: buff != NULL, sc = byte count (<=512) */
+	{
+		UINT cnt = (UINT)sc;
+		/* protect against overruns */
+		if (cnt > bytes_left) return RES_PARERR;
+
+		for (i = 0; i < cnt; i++) {
+			xmit_spi(buff[i]);
+		}
+		bytes_left -= cnt;
+
+		/* If caller writes exactly 512 bytes in total, just return OK;
+		   finalization will be done by disk_writep(NULL,0) called by PFF */
+		return RES_OK;
+	}
 }
