@@ -66,25 +66,29 @@ This project focuses on creating a portable environmental data logger implemente
 
 ### Various units on LCD
 
-### Temperature measurement (in °C)
+Temperature measurement (in °C)
 
 ![Display - Temperature](images/Display_TEMP.jpg "Display - Temperature")
 
-### Barometric pressure measurement (in hPa)
+Barometric pressure measurement (in hPa)
 
 ![Display - Pressure](images/Display_PRESS.jpg "Display - Pressure")
 
-### Humidity measurement (in %)
+Humidity measurement (in %)
 
 ![Display - Humidity](images/Display_HUMID.jpg "Display - Humidity")
 
-### Light measurement -- 100 % coresponds to strong illumination, 0 % to dark 
+Light measurement -- 100 % coresponds to strong illumination, 0 % to dark 
 
 ![Display - Light](images/Display_LIGHT.jpg "Display - Light")
 
-### LCD during logging (marked by a star symbol *)
+LCD during logging (marked by a star symbol *)
 
 ![Display - Logging](images/Display_LOGGING.jpg "Display - Logging")
+
+Plotted data from SD card (using the Python script)
+
+![Figure - Log](images/Figure_LOG.png "Figure - Log")
 
 ## References
 
