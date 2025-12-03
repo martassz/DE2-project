@@ -3,8 +3,8 @@
 ### Team members
 
 * Matyas Heneberk (responsible for coding sensors & creating block diagrams, flowcharts & poster creation)
-* Vojtěch Šafařík (responsible for data logging & managing GitHub repository)
-* Martin Zatloukal (responsible for coding sensors & data logging & Python visualisation scripts)
+* Vojtěch Šafařík (responsible for data logging & RTC implementation & Python visualisation script & managing GitHub repository)
+* Martin Zatloukal (responsible for coding sensors & data logging & RTC implementation & Python visualisation scripts)
 
 ### Abstract
 This project focuses on creating a portable environmental data logger implemented on an Arduino UNO board using the toolchains provided by PlatformIO. The data logger displays the measured environmental data (temperature, humidity, barometric pressure and light) on a display. By pressing an encoder button, the data logger starts collecting the data to an SD card, which can then be visualised by a Python script on a computer. The data logger also has a red and green LED that blink upon runtime to indicate whether the environmental data in the room fall within optimal ranges of values (eg. humidity 35-70 %)
@@ -21,7 +21,7 @@ This project focuses on creating a portable environmental data logger implemente
 * Fotoresistor
   - simple light sensor
  
-* RTC module DS3231
+* RTC module DS1302
   - accurate and low-cost solution for keeping time when the data logger is powered off
   
 * I2C LCD Display 1602
@@ -33,7 +33,7 @@ This project focuses on creating a portable environmental data logger implemente
 * SD Card module
   - used for connecting SD card
 
-## Pinout Configuration
+### Pinout Configuration
 
 | Interface Group | Pin Name | Arduino Pin | AVR Port | Connected Components |
 | :--- | :--- | :--- | :--- | :--- |
@@ -53,9 +53,14 @@ This project focuses on creating a portable environmental data logger implemente
 
 ## Software design
 
-- [ ] system-level block diagrams
+- [ ] Block diagram
 - [ ] flowcharts
-- [ ] pseudocode showing the planned software logic and control flow
+
+### Block diagram
+![Block diagram](images/Block_diagram.png "Block_diagram") add here TODAY
+
+### Flowchart
+![Flowchart](images/Flowchart.png "Flowchart") add here TODAY
 
 ## References
 
