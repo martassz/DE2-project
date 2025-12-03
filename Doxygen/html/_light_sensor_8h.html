@@ -64,7 +64,7 @@ $(function(){initNavTree('_light_sensor_8h.html','',''); });
 </div><!--header-->
 <div class="contents">
 
-<p>Interface for handling light sensor (photoresistor) measurements using the ADC.  
+<p>Driver interface for the analog Photoresistor module.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 </div>
@@ -72,134 +72,18 @@ $(function(){initNavTree('_light_sensor_8h.html','',''); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa783cef868e058596921fdd7a4ddeab7" id="r_aa783cef868e058596921fdd7a4ddeab7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa783cef868e058596921fdd7a4ddeab7">lightSensor_init</a> (uint8_t pin)</td></tr>
-<tr class="memdesc:aa783cef868e058596921fdd7a4ddeab7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the ADC for reading a photoresistor.  <br /></td></tr>
-<tr class="memitem:aa1660098d3b68bc8d5173fa99809aa50" id="r_aa1660098d3b68bc8d5173fa99809aa50"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1660098d3b68bc8d5173fa99809aa50">lightSensor_readRaw</a> (void)</td></tr>
-<tr class="memdesc:aa1660098d3b68bc8d5173fa99809aa50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the raw ADC value.  <br /></td></tr>
-<tr class="memitem:a458b0603ed2e591bbb8dba10db75654b" id="r_a458b0603ed2e591bbb8dba10db75654b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a458b0603ed2e591bbb8dba10db75654b">lightSensor_setCalibration</a> (uint16_t minValue, uint16_t maxValue)</td></tr>
-<tr class="memdesc:a458b0603ed2e591bbb8dba10db75654b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets calibration limits for converting raw ADC data to a percentage.  <br /></td></tr>
-<tr class="memitem:a6a228315700687160f0afd0b130ad2e2" id="r_a6a228315700687160f0afd0b130ad2e2"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a228315700687160f0afd0b130ad2e2">lightSensor_readCalibrated</a> (void)</td></tr>
-<tr class="memdesc:a6a228315700687160f0afd0b130ad2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns calibrated light intensity in percent.  <br /></td></tr>
+<tr class="memitem:gaa783cef868e058596921fdd7a4ddeab7" id="r_gaa783cef868e058596921fdd7a4ddeab7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__drivers.html#gaa783cef868e058596921fdd7a4ddeab7">lightSensor_init</a> (uint8_t pin)</td></tr>
+<tr class="memdesc:gaa783cef868e058596921fdd7a4ddeab7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the ADC for reading a photoresistor.  <br /></td></tr>
+<tr class="memitem:gaa1660098d3b68bc8d5173fa99809aa50" id="r_gaa1660098d3b68bc8d5173fa99809aa50"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__drivers.html#gaa1660098d3b68bc8d5173fa99809aa50">lightSensor_readRaw</a> (void)</td></tr>
+<tr class="memdesc:gaa1660098d3b68bc8d5173fa99809aa50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the raw ADC value.  <br /></td></tr>
+<tr class="memitem:ga458b0603ed2e591bbb8dba10db75654b" id="r_ga458b0603ed2e591bbb8dba10db75654b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__drivers.html#ga458b0603ed2e591bbb8dba10db75654b">lightSensor_setCalibration</a> (uint16_t minValue, uint16_t maxValue)</td></tr>
+<tr class="memdesc:ga458b0603ed2e591bbb8dba10db75654b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets calibration limits for converting raw ADC data to a percentage.  <br /></td></tr>
+<tr class="memitem:ga6a228315700687160f0afd0b130ad2e2" id="r_ga6a228315700687160f0afd0b130ad2e2"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__drivers.html#ga6a228315700687160f0afd0b130ad2e2">lightSensor_readCalibrated</a> (void)</td></tr>
+<tr class="memdesc:ga6a228315700687160f0afd0b130ad2e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns calibrated light intensity in percent.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for handling light sensor (photoresistor) measurements using the ADC. </p>
-</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="aa783cef868e058596921fdd7a4ddeab7" name="aa783cef868e058596921fdd7a4ddeab7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa783cef868e058596921fdd7a4ddeab7">&#9670;&#160;</a></span>lightSensor_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lightSensor_init </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pin</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initializes the ADC for reading a photoresistor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>ADC channel number (0–5) depending on wiring.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Initializes the ADC for reading a photoresistor.</p>
-<p>Sets reference voltage to AVCC and configures ADC prescaler for stable readings.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>ADC channel number (0–5 on Arduino Uno). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a6a228315700687160f0afd0b130ad2e2" name="a6a228315700687160f0afd0b130ad2e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a228315700687160f0afd0b130ad2e2">&#9670;&#160;</a></span>lightSensor_readCalibrated()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t lightSensor_readCalibrated </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns calibrated light intensity in percent. </p>
-<dl class="section return"><dt>Returns</dt><dd>Light level from 0% (dark) to 100% (bright).</dd></dl>
-<p>Returns calibrated light intensity in percent.</p>
-<dl class="section return"><dt>Returns</dt><dd>Light intensity from 0% (bright) to 100% (dark). </dd></dl>
-
-</div>
-</div>
-<a id="aa1660098d3b68bc8d5173fa99809aa50" name="aa1660098d3b68bc8d5173fa99809aa50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1660098d3b68bc8d5173fa99809aa50">&#9670;&#160;</a></span>lightSensor_readRaw()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t lightSensor_readRaw </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reads the raw ADC value. </p>
-<dl class="section return"><dt>Returns</dt><dd>Raw ADC value in the range 0–1023.</dd></dl>
-<p>Reads the raw ADC value.</p>
-<dl class="section return"><dt>Returns</dt><dd>10-bit ADC value in the range 0–1023. </dd></dl>
-
-</div>
-</div>
-<a id="a458b0603ed2e591bbb8dba10db75654b" name="a458b0603ed2e591bbb8dba10db75654b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a458b0603ed2e591bbb8dba10db75654b">&#9670;&#160;</a></span>lightSensor_setCalibration()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lightSensor_setCalibration </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>minValue</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>maxValue</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets calibration limits for converting raw ADC data to a percentage. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">minValue</td><td>ADC value measured in complete darkness. </td></tr>
-    <tr><td class="paramname">maxValue</td><td>ADC value measured under maximum light.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Sets calibration limits for converting raw ADC data to a percentage.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">minValue</td><td>ADC value measured in darkness. </td></tr>
-    <tr><td class="paramname">maxValue</td><td>ADC value measured at maximum brightness. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-</div><!-- contents -->
+<div class="textblock"><p>Driver interface for the analog Photoresistor module. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

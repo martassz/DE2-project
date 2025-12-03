@@ -5,8 +5,9 @@
  * Provides functions to initialize, start, stop, and append data to the log file.
  * Uses the Petit FatFs library for the underlying filesystem operations.
  *
- * @author Team DE2-Project
- * @date 2025
+ * @defgroup storage Data Storage
+ * @brief SD Card logging and file system handling.
+ * @{
  */
 
 #ifndef SDLOG_H
@@ -61,3 +62,5 @@ void sd_log_stop(void);
 void sd_log_append_line(float T, float P, float H, uint16_t L);
 
 #endif /* SDLOG_H */
+
+/** @} */

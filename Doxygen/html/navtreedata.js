@@ -50,7 +50,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_light_sensor_8c.html",
-"main_8c.html#a840291bc02cba5474a4cb46a9b9566fe"
+"struct_f_a_t_f_s.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

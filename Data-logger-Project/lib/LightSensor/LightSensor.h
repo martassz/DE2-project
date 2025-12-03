@@ -1,8 +1,8 @@
-
-
 /**
  * @file LightSensor.h
- * @brief Interface for handling light sensor (photoresistor) measurements using the ADC.
+ * @brief Driver interface for the analog Photoresistor module.
+ * @addtogroup drivers
+ * @{
  */
 
 #ifndef LIGHT_SENSOR_H
@@ -39,6 +39,6 @@ void lightSensor_setCalibration(uint16_t minValue, uint16_t maxValue);
  */
 uint16_t lightSensor_readCalibrated(void);
 
-#endif
+#endif  /* LIGHTSENSOR_H */
 
-
+/** @} */

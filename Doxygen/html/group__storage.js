@@ -1,4 +1,4 @@
-var sdlog_8h =
+var group__storage =
 [
     [ "sd_log_append_line", "group__storage.html#ga2e5a3292c60492600b9b7fa7e5a5140f", null ],
     [ "sd_log_init", "group__storage.html#ga4bf7bebe64ff656a03353f0e329195fe", null ],
