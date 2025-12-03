@@ -1,3 +1,14 @@
+/**
+ * @file bme280.h
+ * @brief Driver interface for BME280 Environmental Sensor.
+ *
+ * Provides functions to initialize the sensor and read compensated data.
+ * Communication is handled via I2C (TWI).
+ *
+ * @author Team DE2-Project
+ * @date 2025
+ */
+
 #ifndef BME280_H
 #define BME280_H
 
@@ -5,37 +16,30 @@
 
 /**
  * @brief I2C address of the BME280 sensor.
- *        0x76 if SDO is pulled to GND.
- *        0x77 if SDO is pulled to VCC.
+ * - 0x76: SDO pin connected to GND.
+ * - 0x77: SDO pin connected to VCC.
  */
 #define BME280_I2C_ADDR 0x76
 
 /**
  * @brief Initialize the BME280 sensor.
  *
- * This:
- *  - reads all calibration registers from sensor memory,
- *  - configures oversampling for T/P/H (x1),
- *  - enables "normal" measurement mode.
- *
- * Must be called once before any data read operation.
+ * Performs the following:
+ * - Reads factory calibration parameters from the sensor's ROM.
+ * - Configures oversampling settings for Humidity, Temperature, and Pressure.
+ * - Sets the sensor mode to Normal.
  */
 void bme280_init(void);
 
 /**
- * @brief Read compensated temperature, pressure and humidity values.
+ * @brief Read and compensate sensor data.
  *
- * The function:
- *  - reads raw sensor registers,
- *  - applies Bosch official integer compensation formulas,
- *  - returns physical values:
- *      - temperature in °C
- *      - pressure in hPa
- *      - humidity in %RH
+ * Reads raw ADC values from the sensor and applies the Bosch compensation formulas
+ * using the stored calibration parameters.
  *
- * @param temperature  Output: °C
- * @param pressure     Output: hPa
- * @param humidity     Output: %RH
+ * @param[out] temperature Pointer to float variable for Temperature [°C].
+ * @param[out] pressure    Pointer to float variable for Pressure [hPa].
+ * @param[out] humidity    Pointer to float variable for Humidity [%RH].
  */
 void bme280_read(float *temperature, float *pressure, float *humidity);
 

@@ -1,3 +1,16 @@
+/**
+ * @file lcd.h
+ * @brief HD44780 LCD driver library interface.
+ *
+ * Provides definitions and prototypes for controlling standard character LCDs.
+ * Can operate in 4-bit IO mode or memory mapped mode.
+ *
+ * @author Peter Fleury (Original Author)
+ * @author Tomas Fryza (Modifications)
+ * @date 2015
+ * @copyright GNU General Public License Version 3
+ */
+
 #ifndef LCD_H
 #define LCD_H
 

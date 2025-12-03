@@ -1,56 +1,96 @@
+/**
+ * @file loggerControl.h
+ * @brief Controller interface for User Interface and System State.
+ *
+ * This module acts as the central hub for the application state. It manages:
+ * - The shared system time (RTC).
+ * - The shared sensor values (Temperature, Pressure, Humidity, Light).
+ * - The LCD display and Rotary Encoder inputs.
+ *
+ * @author Team DE2-Project
+ * @date 2025
+ */
+
 #ifndef LOGGER_CONTROL_H
 #define LOGGER_CONTROL_H
 
 #include <stdint.h>
-
-/*
- * Logger control public header
- *
- * - Exposes display/encoder helpers used by main.c
- * - Provides access to shared globals (temperature/pressure/humidity/light)
- * - Declares rtc_time_t and extern g_time (hours/minutes/seconds)
- *
- * NOTE: This header assumes you have a DS1302 driver available (ds1302.h)
- *       The loggerControl.c uses ds1302_read_time() to update g_time.
- */
-
 #include "ds1302.h"   /* DS1302 time type (ds1302_time_t) and API */
 
-/* Shared global sensor values (defined in main.c) */
+/* --- Global Variables (Shared State) --- */
+
+/** @brief Global shared temperature value in degrees Celsius. */
 extern volatile float g_T;
+
+/** @brief Global shared pressure value in hPa. */
 extern volatile float g_P;
+
+/** @brief Global shared humidity value in %. */
 extern volatile float g_H;
+
+/** @brief Global shared light intensity (raw or percentage). */
 extern volatile uint16_t g_Light;
 
-/* Unified small RTC type used by the application (hours/minutes/seconds) */
+/**
+ * @brief Simplified structure for holding system time (HH:MM:SS).
+ * Used for display and logging purposes to save RAM compared to full RTC struct.
+ */
 typedef struct {
-    uint8_t hh;
-    uint8_t mm;
-    uint8_t ss;
+    uint8_t hh; /**< Hours (0-23) */
+    uint8_t mm; /**< Minutes (0-59) */
+    uint8_t ss; /**< Seconds (0-59) */
 } rtc_time_t;
 
-/* Shared global RTC time (defined in main.c) */
+/** @brief Global shared system time. Updated periodically from RTC. */
 extern volatile rtc_time_t g_time;
 
-/* Control variables (defined in loggerControl.c) */
-extern volatile uint8_t lcdValue;       /* which value to display (0..3) */
-extern volatile uint8_t flag_update_lcd;/* set to request LCD redraw */
+/* --- UI Control Variables --- */
 
-/* Public API */
+/**
+ * @brief Current value index displayed on LCD.
+ * 0 = Temperature, 1 = Pressure, 2 = Humidity, 3 = Light.
+ */
+extern volatile uint8_t lcdValue;
 
-/* Initialize LCD and show intro */
+/**
+ * @brief Flag indicating a request to redraw the LCD.
+ * Set to 1 by the encoder ISR or periodic timer when data changes.
+ */
+extern volatile uint8_t flag_update_lcd;
+
+/* --- Function Prototypes --- */
+
+/**
+ * @brief Initialize the LCD display and show the welcome screen.
+ */
 void logger_display_init(void);
 
-/* Draw current screen (reads g_time and g_* globals) */
+/**
+ * @brief Render the current screen content to the I2C LCD.
+ *
+ * Reads the `g_time` and the sensor value selected by `lcdValue`.
+ * Also displays the recording status icon.
+ */
 void logger_display_draw(void);
 
-/* Initialize encoder pins and any local state */
+/**
+ * @brief Initialize rotary encoder GPIO pins and internal pull-ups.
+ */
 void logger_encoder_init(void);
 
-/* Poll encoder — call frequently from main loop */
+/**
+ * @brief Poll the rotary encoder status.
+ *
+ * This function handles the state machine for rotation (debouncing)
+ * and checks the button press state. It updates `lcdValue` and `flag_update_lcd`.
+ * Should be called frequently from the main loop.
+ */
 void logger_encoder_poll(void);
 
-/* Read time from DS1302 and store into g_time (hh/mm/ss) */
+/**
+ * @brief Read current time from DS1302 RTC and update the global `g_time` structure.
+ * Uses I2C/TWI communication (note: standard DS1302 is SPI-like, ensuring driver match).
+ */
 void logger_rtc_read_time(void);
 
 #endif /* LOGGER_CONTROL_H */

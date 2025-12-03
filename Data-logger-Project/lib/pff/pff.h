@@ -1,3 +1,17 @@
+/**
+ * @file pff.h
+ * @brief Petit FatFs - FAT file system module interface.
+ *
+ * This is the header file for the Petit FatFs module, a lightweight subset of FatFs
+ * designed for small embedded systems.
+ *
+ * @note This library is used for reading/writing to the SD card.
+ * @author ChaN (Original Author)
+ * @author Team DE2-Project (Integration)
+ * @date 2024
+ * @copyright Copyright (C) 2019, ChaN, all right reserved.
+ */
+
 /*---------------------------------------------------------------------------/
 /  Petit FatFs - FAT file system module include file  R0.03a
 /----------------------------------------------------------------------------/

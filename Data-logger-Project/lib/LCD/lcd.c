@@ -1,3 +1,15 @@
+/**
+ * @file lcd.c
+ * @brief HD44780 LCD driver library implementation.
+ *
+ * Contains low-level functions for initializing and controlling the LCD
+ * controller (HD44780 or compatible).
+ *
+ * @author Peter Fleury
+ * @author Tomas Fryza
+ * @date 2015
+ */
+
 /****************************************************************************
  * Title:     HD44780U LCD library
  * Authors:   Peter Fleury <pfleury@gmx.ch>  http://tinyurl.com/peterfleury

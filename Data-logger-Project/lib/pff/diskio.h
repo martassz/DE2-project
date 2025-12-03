@@ -1,6 +1,19 @@
-/*-----------------------------------------------------------------------
-/  PFF - Low level disk interface modlue include file    (C)ChaN, 2014
-/-----------------------------------------------------------------------*/
+/**
+ * @file diskio.c
+ * @brief Low level disk I/O module for SD Card (SPI).
+ *
+ * Implements the SPI communication layer required by Petit FatFs to talk to the SD card.
+ * Handles initialization, reading, and writing of sectors.
+ *
+ * @note Modified for ATmega328P and custom SPI pinout.
+ * @author ChaN (Original Skeleton)
+ * @author Team DE2-Project (Implementation)
+ * @date 2025
+ */
+
+/*-----------------------------------------------------------------------*/
+/* Low level disk I/O module skeleton for Petit FatFs (C)ChaN, 2014      */
+/*-----------------------------------------------------------------------*/
 
 #ifndef _DISKIO_DEFINED
 #define _DISKIO_DEFINED
