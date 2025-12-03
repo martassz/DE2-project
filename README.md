@@ -63,7 +63,7 @@ This project focuses on creating a portable environmental data logger implemente
 ![Flowchart](images/Flowchart.png "Flowchart") add here TODAY
 
 ## Project demonstration
-TODAY -- add here photos of the project running, comment whats happening and then display the graphs in computer, also add photos.
+TODAY -- add photos here of the project, comment whats happening and then display the graphs on the computer, also add figure PNGs.
 
 ## References
 
