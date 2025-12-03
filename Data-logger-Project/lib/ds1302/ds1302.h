@@ -4,8 +4,8 @@
  *
  * Provides functions to set and read time using a 3-wire interface (bit-banged).
  *
- * @author Team DE2-Project
- * @date 2025
+ * @addtogroup drivers
+ * @{
  */
 
 #ifndef DS1302_H
@@ -104,3 +104,5 @@ void ds1302_read_time(ds1302_time_t *t);
 void ds1302_set_time(const ds1302_time_t *t);
 
 #endif /* DS1302_H */
+
+/** @} */

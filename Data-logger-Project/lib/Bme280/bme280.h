@@ -4,9 +4,9 @@
  *
  * Provides functions to initialize the sensor and read compensated data.
  * Communication is handled via I2C (TWI).
- *
- * @author Team DE2-Project
- * @date 2025
+ * @defgroup drivers Sensor Drivers
+ * @brief Hardware abstraction layer for external sensors.
+ * @{
  */
 
 #ifndef BME280_H
@@ -44,3 +44,5 @@ void bme280_init(void);
 void bme280_read(float *temperature, float *pressure, float *humidity);
 
 #endif // BME280_H
+
+/** @} */

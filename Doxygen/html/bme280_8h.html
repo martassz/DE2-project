@@ -72,105 +72,20 @@ $(function(){initNavTree('bme280_8h.html','',''); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a0464c59595eab5ce342e47d556f945d8" id="r_a0464c59595eab5ce342e47d556f945d8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0464c59595eab5ce342e47d556f945d8">BME280_I2C_ADDR</a>&#160;&#160;&#160;0x76</td></tr>
-<tr class="memdesc:a0464c59595eab5ce342e47d556f945d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C address of the BME280 sensor.  <br /></td></tr>
+<tr class="memitem:ga0464c59595eab5ce342e47d556f945d8" id="r_ga0464c59595eab5ce342e47d556f945d8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__drivers.html#ga0464c59595eab5ce342e47d556f945d8">BME280_I2C_ADDR</a>&#160;&#160;&#160;0x76</td></tr>
+<tr class="memdesc:ga0464c59595eab5ce342e47d556f945d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C address of the BME280 sensor.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aab2d0c7ae27504fd3abdca793bc20307" id="r_aab2d0c7ae27504fd3abdca793bc20307"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab2d0c7ae27504fd3abdca793bc20307">bme280_init</a> (void)</td></tr>
-<tr class="memdesc:aab2d0c7ae27504fd3abdca793bc20307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the BME280 sensor.  <br /></td></tr>
-<tr class="memitem:a495101798958dc4c65e38d1abf0a518d" id="r_a495101798958dc4c65e38d1abf0a518d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a495101798958dc4c65e38d1abf0a518d">bme280_read</a> (float *temperature, float *pressure, float *humidity)</td></tr>
-<tr class="memdesc:a495101798958dc4c65e38d1abf0a518d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read and compensate sensor data.  <br /></td></tr>
+<tr class="memitem:gaab2d0c7ae27504fd3abdca793bc20307" id="r_gaab2d0c7ae27504fd3abdca793bc20307"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__drivers.html#gaab2d0c7ae27504fd3abdca793bc20307">bme280_init</a> (void)</td></tr>
+<tr class="memdesc:gaab2d0c7ae27504fd3abdca793bc20307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the BME280 sensor.  <br /></td></tr>
+<tr class="memitem:ga495101798958dc4c65e38d1abf0a518d" id="r_ga495101798958dc4c65e38d1abf0a518d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__drivers.html#ga495101798958dc4c65e38d1abf0a518d">bme280_read</a> (float *temperature, float *pressure, float *humidity)</td></tr>
+<tr class="memdesc:ga495101798958dc4c65e38d1abf0a518d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read and compensate sensor data.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Driver interface for BME280 Environmental Sensor. </p>
-<p>Provides functions to initialize the sensor and read compensated data. Communication is handled via I2C (TWI).</p>
-<dl class="section author"><dt>Author</dt><dd>Team DE2-Project </dd></dl>
-<dl class="section date"><dt>Date</dt><dd>2025 </dd></dl>
-</div><a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="a0464c59595eab5ce342e47d556f945d8" name="a0464c59595eab5ce342e47d556f945d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0464c59595eab5ce342e47d556f945d8">&#9670;&#160;</a></span>BME280_I2C_ADDR</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define BME280_I2C_ADDR&#160;&#160;&#160;0x76</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>I2C address of the BME280 sensor. </p>
-<ul>
-<li>0x76: SDO pin connected to GND.</li>
-<li>0x77: SDO pin connected to VCC. </li>
-</ul>
-
-</div>
-</div>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="aab2d0c7ae27504fd3abdca793bc20307" name="aab2d0c7ae27504fd3abdca793bc20307"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab2d0c7ae27504fd3abdca793bc20307">&#9670;&#160;</a></span>bme280_init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void bme280_init </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initialize the BME280 sensor. </p>
-<p>Performs the following:</p><ul>
-<li>Reads factory calibration parameters from the sensor's ROM.</li>
-<li>Configures oversampling settings for Humidity, Temperature, and Pressure.</li>
-<li>Sets the sensor mode to Normal. </li>
-</ul>
-
-</div>
-</div>
-<a id="a495101798958dc4c65e38d1abf0a518d" name="a495101798958dc4c65e38d1abf0a518d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a495101798958dc4c65e38d1abf0a518d">&#9670;&#160;</a></span>bme280_read()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void bme280_read </td>
-          <td>(</td>
-          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>temperature</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>pressure</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>humidity</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Read and compensate sensor data. </p>
-<p>Reads raw ADC values from the sensor and applies the Bosch compensation formulas using the stored calibration parameters.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">temperature</td><td>Pointer to float variable for Temperature [°C]. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pressure</td><td>Pointer to float variable for Pressure [hPa]. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">humidity</td><td>Pointer to float variable for Humidity [RH]. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-</div><!-- contents -->
+<p>Provides functions to initialize the sensor and read compensated data. Communication is handled via I2C (TWI). </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

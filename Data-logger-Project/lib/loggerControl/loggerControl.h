@@ -6,9 +6,9 @@
  * - The shared system time (RTC).
  * - The shared sensor values (Temperature, Pressure, Humidity, Light).
  * - The LCD display and Rotary Encoder inputs.
- *
- * @author Team DE2-Project
- * @date 2025
+ * @defgroup app_logic Application Logic
+ * @brief High-level application control and UI handling.
+ * @{
  */
 
 #ifndef LOGGER_CONTROL_H
@@ -94,3 +94,5 @@ void logger_encoder_poll(void);
 void logger_rtc_read_time(void);
 
 #endif /* LOGGER_CONTROL_H */
+
+/** @} */

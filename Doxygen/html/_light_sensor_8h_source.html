@@ -63,29 +63,27 @@ $(function(){initNavTree('_light_sensor_8h_source.html','',''); });
   <div class="headertitle"><div class="title">LightSensor.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="_light_sensor_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span></div>
+<a href="_light_sensor_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#ifndef LIGHT_SENSOR_H</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#define LIGHT_SENSOR_H</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keywordtype">void</span> <a class="code hl_function" href="_light_sensor_8h.html#aa783cef868e058596921fdd7a4ddeab7">lightSensor_init</a>(uint8_t pin);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keywordtype">void</span> <a class="code hl_function" href="group__drivers.html#gaa783cef868e058596921fdd7a4ddeab7">lightSensor_init</a>(uint8_t pin);</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>uint16_t <a class="code hl_function" href="_light_sensor_8h.html#aa1660098d3b68bc8d5173fa99809aa50">lightSensor_readRaw</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>uint16_t <a class="code hl_function" href="group__drivers.html#gaa1660098d3b68bc8d5173fa99809aa50">lightSensor_readRaw</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keywordtype">void</span> <a class="code hl_function" href="_light_sensor_8h.html#a458b0603ed2e591bbb8dba10db75654b">lightSensor_setCalibration</a>(uint16_t minValue, uint16_t maxValue);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keywordtype">void</span> <a class="code hl_function" href="group__drivers.html#ga458b0603ed2e591bbb8dba10db75654b">lightSensor_setCalibration</a>(uint16_t minValue, uint16_t maxValue);</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>uint16_t <a class="code hl_function" href="_light_sensor_8h.html#a6a228315700687160f0afd0b130ad2e2">lightSensor_readCalibrated</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>uint16_t <a class="code hl_function" href="group__drivers.html#ga6a228315700687160f0afd0b130ad2e2">lightSensor_readCalibrated</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="ttc" id="a_light_sensor_8h_html_a458b0603ed2e591bbb8dba10db75654b"><div class="ttname"><a href="_light_sensor_8h.html#a458b0603ed2e591bbb8dba10db75654b">lightSensor_setCalibration</a></div><div class="ttdeci">void lightSensor_setCalibration(uint16_t minValue, uint16_t maxValue)</div><div class="ttdoc">Sets calibration limits for converting raw ADC data to a percentage.</div><div class="ttdef"><b>Definition</b> LightSensor.c:63</div></div>
-<div class="ttc" id="a_light_sensor_8h_html_a6a228315700687160f0afd0b130ad2e2"><div class="ttname"><a href="_light_sensor_8h.html#a6a228315700687160f0afd0b130ad2e2">lightSensor_readCalibrated</a></div><div class="ttdeci">uint16_t lightSensor_readCalibrated(void)</div><div class="ttdoc">Returns calibrated light intensity in percent.</div><div class="ttdef"><b>Definition</b> LightSensor.c:74</div></div>
-<div class="ttc" id="a_light_sensor_8h_html_aa1660098d3b68bc8d5173fa99809aa50"><div class="ttname"><a href="_light_sensor_8h.html#aa1660098d3b68bc8d5173fa99809aa50">lightSensor_readRaw</a></div><div class="ttdeci">uint16_t lightSensor_readRaw(void)</div><div class="ttdoc">Reads the raw ADC value.</div><div class="ttdef"><b>Definition</b> LightSensor.c:42</div></div>
-<div class="ttc" id="a_light_sensor_8h_html_aa783cef868e058596921fdd7a4ddeab7"><div class="ttname"><a href="_light_sensor_8h.html#aa783cef868e058596921fdd7a4ddeab7">lightSensor_init</a></div><div class="ttdeci">void lightSensor_init(uint8_t pin)</div><div class="ttdoc">Initializes the ADC for reading a photoresistor.</div><div class="ttdef"><b>Definition</b> LightSensor.c:25</div></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#endif  </span><span class="comment">/* LIGHTSENSOR_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span></div>
+<div class="ttc" id="agroup__drivers_html_ga458b0603ed2e591bbb8dba10db75654b"><div class="ttname"><a href="group__drivers.html#ga458b0603ed2e591bbb8dba10db75654b">lightSensor_setCalibration</a></div><div class="ttdeci">void lightSensor_setCalibration(uint16_t minValue, uint16_t maxValue)</div><div class="ttdoc">Sets calibration limits for converting raw ADC data to a percentage.</div><div class="ttdef"><b>Definition</b> LightSensor.c:63</div></div>
+<div class="ttc" id="agroup__drivers_html_ga6a228315700687160f0afd0b130ad2e2"><div class="ttname"><a href="group__drivers.html#ga6a228315700687160f0afd0b130ad2e2">lightSensor_readCalibrated</a></div><div class="ttdeci">uint16_t lightSensor_readCalibrated(void)</div><div class="ttdoc">Returns calibrated light intensity in percent.</div><div class="ttdef"><b>Definition</b> LightSensor.c:74</div></div>
+<div class="ttc" id="agroup__drivers_html_gaa1660098d3b68bc8d5173fa99809aa50"><div class="ttname"><a href="group__drivers.html#gaa1660098d3b68bc8d5173fa99809aa50">lightSensor_readRaw</a></div><div class="ttdeci">uint16_t lightSensor_readRaw(void)</div><div class="ttdoc">Reads the raw ADC value.</div><div class="ttdef"><b>Definition</b> LightSensor.c:42</div></div>
+<div class="ttc" id="agroup__drivers_html_gaa783cef868e058596921fdd7a4ddeab7"><div class="ttname"><a href="group__drivers.html#gaa783cef868e058596921fdd7a4ddeab7">lightSensor_init</a></div><div class="ttdeci">void lightSensor_init(uint8_t pin)</div><div class="ttdoc">Initializes the ADC for reading a photoresistor.</div><div class="ttdef"><b>Definition</b> LightSensor.c:25</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->
