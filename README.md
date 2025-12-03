@@ -63,7 +63,12 @@ This project focuses on creating a portable environmental data logger implemente
 ![Flowchart](images/Flowchart.png "Flowchart") add here TODAY
 
 ## Project demonstration
-TODAY -- add photos here of the project, comment whats happening and then display the graphs on the computer, also add figure PNGs.
+
+### Various units on LCD
+![Display - Temperature](images/Display_TEMP.jpg "Display - Temperature")
+![Display - Pressure](images/Display_PRESS.jpg "Display - Pressure")
+![Display - Humidity](images/Display_HUMID.jpg "Display - Humidity")
+![Display - Light](images/Display_LIGHT.jpg "Display - Light")
 
 ## References
 
