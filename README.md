@@ -88,7 +88,7 @@ LCD during logging (marked by a star symbol *)
 
 Plotted data from SD card (using the Python script)
 
-![Figure - Log](images/Figure_LOG.png "Figure - Log")
+![Figure - Log](images/Figure-LOG.png "Figure - Log")
 
 ## References
 
