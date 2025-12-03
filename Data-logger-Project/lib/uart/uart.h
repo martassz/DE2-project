@@ -1,3 +1,15 @@
+/**
+ * @file uart.h
+ * @brief Interrupt UART library with circular buffers.
+ *
+ * Provides interrupt-driven UART communication with ring buffers for
+ * efficient transmission and reception of data.
+ *
+ * @author Peter Fleury
+ * @date 2015
+ * @copyright GNU General Public License Version 3
+ */
+
 #ifndef UART_H
 # define UART_H
 

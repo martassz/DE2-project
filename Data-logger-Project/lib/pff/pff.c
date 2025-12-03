@@ -1,3 +1,14 @@
+/**
+ * @file pff.c
+ * @brief Petit FatFs - FAT file system module implementation.
+ *
+ * Contains the core logic for handling FAT12/16/32 file systems.
+ * Modified to support custom disk I/O functions for this project.
+ *
+ * @author ChaN (Original Author)
+ * @date 2019 (R0.03a)
+ */
+
 /*----------------------------------------------------------------------------/
 /  Petit FatFs - FAT file system module  R0.03a
 /-----------------------------------------------------------------------------/

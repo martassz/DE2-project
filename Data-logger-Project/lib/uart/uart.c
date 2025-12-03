@@ -1,3 +1,13 @@
+/**
+ * @file uart.c
+ * @brief Interrupt UART library implementation.
+ *
+ * Implements ISRs for data reception and transmission using circular buffers.
+ *
+ * @author Peter Fleury
+ * @date 2015
+ */
+
 /*************************************************************************
 *  Title:    Interrupt UART library with receive/transmit circular buffers
 *  Author:   Peter Fleury <pfleury@gmx.ch>   http://tinyurl.com/peterfleury

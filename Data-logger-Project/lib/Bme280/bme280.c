@@ -1,9 +1,17 @@
+/**
+ * @file bme280.c
+ * @brief Driver for BME280 Temperature, Humidity and Pressure Sensor.
+ *
+ * Implements I2C communication and integer compensation formulas
+ * provided by Bosch Sensortec.
+ */
+
 #include <avr/io.h>
 #include <twi.h>
 #include "bme280.h"
 
 // -----------------------------------------------------------------------------
-// Calibration data
+// Calibration data (Compensation parameters)
 // -----------------------------------------------------------------------------
 static int32_t t_fine;
 
@@ -23,6 +31,12 @@ static int8_t   dig_H6;
 // -----------------------------------------------------------------------------
 // Low-level register access
 // -----------------------------------------------------------------------------
+
+/**
+ * @brief Reads an 8-bit value from a specific register.
+ * @param reg Register address.
+ * @return Value read from the register.
+ */
 static uint8_t bme280_reg_read8(uint8_t reg)
 {
     uint8_t val;
@@ -36,6 +50,11 @@ static uint8_t bme280_reg_read8(uint8_t reg)
     return val;
 }
 
+/**
+ * @brief Reads a 16-bit value (Little Endian) from two consecutive registers.
+ * @param reg Starting register address.
+ * @return 16-bit unsigned value.
+ */
 static uint16_t bme280_reg_read16(uint8_t reg)
 {
     uint8_t lsb, msb;
@@ -44,7 +63,6 @@ static uint16_t bme280_reg_read16(uint8_t reg)
     return (uint16_t)((msb << 8) | lsb);
 }
 
-// Some calibration registers are signed
 static int16_t bme280_reg_readS16(uint8_t reg)
 {
     return (int16_t)bme280_reg_read16(reg);
@@ -55,12 +73,13 @@ static int16_t bme280_reg_readS16(uint8_t reg)
 // -----------------------------------------------------------------------------
 void bme280_init(void)
 {
-    // --- Temperature calibration 0x88..0x8D ---
+    // --- Read Trimming Parameters ---
+    // Temperature calibration 0x88..0x8D
     dig_T1 = bme280_reg_read16(0x88);
     dig_T2 = bme280_reg_readS16(0x8A);
     dig_T3 = bme280_reg_readS16(0x8C);
 
-    // --- Pressure calibration 0x8E..0x9F ---
+    // Pressure calibration 0x8E..0x9F
     dig_P1 = bme280_reg_read16(0x8E);
     dig_P2 = bme280_reg_readS16(0x90);
     dig_P3 = bme280_reg_readS16(0x92);
@@ -71,7 +90,7 @@ void bme280_init(void)
     dig_P8 = bme280_reg_readS16(0x9C);
     dig_P9 = bme280_reg_readS16(0x9E);
 
-    // --- Humidity calibration ---
+    // Humidity calibration
     dig_H1 = bme280_reg_read8(0xA1);
     dig_H2 = bme280_reg_readS16(0xE1);
     dig_H3 = bme280_reg_read8(0xE3);
@@ -84,17 +103,17 @@ void bme280_init(void)
     dig_H5 = (int16_t)((e6 << 4) | (e5 >> 4));
     dig_H6 = (int8_t)bme280_reg_read8(0xE7);
 
-    // --- Configure sensor ---
+    // --- Configure Sensor Settings ---
     twi_start();
     twi_write((BME280_I2C_ADDR << 1) | TWI_WRITE);
-    twi_write(0xF2); // Humidity oversampling
-    twi_write(0x01); // x1
+    twi_write(0xF2); // ctrl_hum
+    twi_write(0x01); // Humidity oversampling x1
     twi_stop();
 
     twi_start();
     twi_write((BME280_I2C_ADDR << 1) | TWI_WRITE);
-    twi_write(0xF4); // Temp + Pressure oversampling, normal mode
-    twi_write(0x27); // Temp x1, Pressure x1, mode=normal
+    twi_write(0xF4); // ctrl_meas
+    twi_write(0x27); // Temp x1, Pressure x1, Mode Normal
     twi_stop();
 }
 
@@ -105,7 +124,7 @@ void bme280_read(float *temperature, float *pressure, float *humidity)
 {
     uint8_t data[8];
 
-    // Read 0xF7..0xFE block (pressure 3B, temp 3B, humidity 2B)
+    // Burst read 0xF7..0xFE (pressure, temp, humidity)
     twi_start();
     twi_write((BME280_I2C_ADDR << 1) | TWI_WRITE);
     twi_write(0xF7);
@@ -117,6 +136,7 @@ void bme280_read(float *temperature, float *pressure, float *humidity)
 
     twi_stop();
 
+    // Construct raw values
     uint32_t raw_p = ((uint32_t)data[0] << 12) | ((uint32_t)data[1] << 4) | (data[2] >> 4);
     uint32_t raw_t = ((uint32_t)data[3] << 12) | ((uint32_t)data[4] << 4) | (data[5] >> 4);
     uint32_t raw_h = ((uint32_t)data[6] << 8) | data[7];

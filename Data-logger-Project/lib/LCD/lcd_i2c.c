@@ -1,20 +1,26 @@
+/**
+ * @file lcd_i2c.c
+ * @brief I2C LCD Driver using PCF8574.
+ *
+ * Implements initialization and control of HD44780-based LCDs via I2C backpack.
+ */
+
 #include "lcd_i2c.h"
-#include "../twi/twi.h" // Includes the user's TWI library
+#include "../twi/twi.h"
 
 /* PCF8574 Pin Definitions */
 /* Standard backpack mapping: P0=RS, P1=RW, P2=EN, P3=BL, P4-P7=Data(D4-D7) */
 #define LCD_RS_BIT 0x01
 #define LCD_RW_BIT 0x02
 #define LCD_EN_BIT 0x04
-#define LCD_BL_BIT 0x08 
+#define LCD_BL_BIT 0x08
 
-// Global variable to store current backlight state
-uint8_t _backlight_val = LCD_BL_BIT; 
+/** Global variable to store current backlight state (ON/OFF) */
+uint8_t _backlight_val = LCD_BL_BIT;
 
 /**
- * @brief Internal function to send a byte to the PCF8574 expander
- * Includes Start/Stop condition for atomic operation.
- * @param val Byte to be written to the port
+ * @brief Internal function to send a byte to the PCF8574 expander.
+ * @param val Byte to be written to the port.
  */
 static void i2c_send_byte(uint8_t val)
 {
@@ -25,20 +31,19 @@ static void i2c_send_byte(uint8_t val)
 }
 
 /**
- * @brief Pulse the Enable bit to latch data into LCD controller
- * @param val Data currently on the bus
+ * @brief Pulse the Enable bit to latch data into LCD controller.
+ * @param val Data currently on the bus.
  */
 static void lcd_pulse_enable(uint8_t val)
 {
     i2c_send_byte(val | LCD_EN_BIT);  // Enable High
-    _delay_us(1);                     // Short delay (enable pulse width > 450ns)
+    _delay_us(1);                     // Short delay
     i2c_send_byte(val & ~LCD_EN_BIT); // Enable Low
-    _delay_us(50);                    // Wait for execution time
+    _delay_us(50);                    // Execution time
 }
 
 /**
- * @brief Write 4 bits (nibble) to the LCD
- * @param val Lower 4 bits contain the data
+ * @brief Write 4 bits (nibble) to the LCD.
  */
 static void lcd_write_4bit(uint8_t val)
 {
@@ -47,9 +52,9 @@ static void lcd_write_4bit(uint8_t val)
 }
 
 /**
- * @brief Send a full byte to LCD (split into two nibbles)
- * @param value Byte to send
- * @param mode 0 = Instruction, 1 = Data (Character)
+ * @brief Send a full byte to LCD (split into two nibbles).
+ * @param value Byte to send.
+ * @param mode 0 = Instruction, 1 = Data.
  */
 static void lcd_send(uint8_t value, uint8_t mode)
 {
@@ -71,56 +76,44 @@ void lcd_i2c_init(void)
     twi_init();    // Initialize I2C bus
     _delay_ms(50); // Wait for power stabilization
 
-    // Initialization sequence for 4-bit mode (as per HD44780 datasheet)
-    // We send raw nibbles here because the LCD is not yet in reliable 4-bit mode
-    
-    // 1. Try to set 8-bit mode (Reset)
+    // Initialization sequence for 4-bit mode (HD44780 standard)
     lcd_write_4bit(0x30);
     _delay_ms(5);
-    
     lcd_write_4bit(0x30);
     _delay_us(150);
-    
     lcd_write_4bit(0x30);
     
-    // 2. Switch to 4-bit mode
+    // Switch to 4-bit mode
     lcd_write_4bit(0x20);
-    
-    // From here on, we use lcd_send which handles two nibbles
-    
-    // 3. Function Set: 4-bit, 2 lines, 5x8 font
+
+    // 4-bit, 2 lines, 5x8 font
     lcd_send(0x28, 0);
-    
-    // 4. Display Control: Display Off
+    // Display Off
     lcd_send(0x08, 0);
-    
-    // 5. Clear Display
+    // Clear Display
     lcd_send(0x01, 0);
     _delay_ms(2);
-    
-    // 6. Entry Mode Set: Increment cursor
+    // Entry Mode Set
     lcd_send(0x06, 0);
-    
-    // 7. Display Control: Display On
+    // Display On
     lcd_send(0x0C, 0);
 }
 
 void lcd_i2c_clrscr(void)
 {
     lcd_send(0x01, 0); // Clear display command
-    _delay_ms(2);      // Needs more time than standard commands
+    _delay_ms(2);
 }
 
 void lcd_i2c_gotoxy(uint8_t col, uint8_t row)
 {
     uint8_t row_offsets[] = {0x00, 0x40, 0x14, 0x54};
-    // Set DDRAM address (0x80 + address)
     lcd_send(0x80 | (col + row_offsets[row]), 0);
 }
 
 void lcd_i2c_putc(char c)
 {
-    lcd_send((uint8_t)c, 1); // 1 = Data mode (RS=1)
+    lcd_send((uint8_t)c, 1);
 }
 
 void lcd_i2c_puts(const char* s)
