@@ -2,7 +2,7 @@
 
 ### Team members
 
-* Matyas Heneberk (responsible for lightsensor code & creating block diagram & video editing & poster creation)
+* Matyas Heneberk (responsible for lightsensor code & creating block diagram and circuit schematics & video editing & poster creation)
 * Vojtěch Šafařík (responsible for data logging & RTC implementation & Python visualisation script & creating the flowchart & managing GitHub repository)
 * Martin Zatloukal (responsible for BME280 code & data logging & RTC implementation & Doxygen documentation & Python visualisation scripts)
 
@@ -33,8 +33,8 @@ This project focuses on creating a portable environmental data logger implemente
 * SD Card module
   - used for connecting SD card
 
-## Components schematics
-![Components schematics](images/Components_schematics.png "Components schematics") add here or remove
+## Circuit schematics
+![Circuit schematics](images/Data-logger-Schematic.png "Circuit schematics")
 
 ## Pinout Configuration
 
