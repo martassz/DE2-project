@@ -9,7 +9,7 @@
 ### Abstract
 This project focuses on creating a portable environmental data logger implemented on an Arduino UNO board using the toolchains provided by PlatformIO. The data logger displays the measured environmental data (temperature, humidity, barometric pressure and light) on a display. By pressing an encoder button, the data logger starts collecting the data to an SD card, which can then be visualised by a Python script on a computer. The SD card data logging uses the Petit FAT File System Module, a lightweight subset of FatFs written in ANSI C.
 
-[**Video demonstration of our project**](add link here later)
+[**Video demonstration of our project**](https://youtu.be/T6lY70KSE_c)
 
 ![Project poster](images/Data-logger-Poster.png "A3 project poster")
 
