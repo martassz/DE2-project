@@ -63,50 +63,59 @@ $(function(){initNavTree('diskio_8h_source.html','',''); });
   <div class="headertitle"><div class="title">diskio.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/* Low level disk I/O module skeleton for Petit FatFs (C)ChaN, 2014      */</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#ifndef _DISKIO_DEFINED</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#define _DISKIO_DEFINED</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;<a class="code" href="pff_8h.html">pff.h</a>&quot;</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">/* Status of Disk Functions */</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">typedef</span> BYTE    DSTATUS;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">/* Results of Disk Functions */</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    RES_OK = 0,     <span class="comment">/* 0: Function succeeded */</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    RES_ERROR,      <span class="comment">/* 1: Disk error */</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    RES_NOTRDY,     <span class="comment">/* 2: Not ready */</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    RES_PARERR      <span class="comment">/* 3: Invalid parameter */</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>} DRESULT;</div>
+<a href="diskio_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">/* Low level disk I/O module interface for Petit FatFs                   */</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/*-----------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#ifndef _DISKIO_DEFINED</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#define _DISKIO_DEFINED</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="pff_8h.html">pff.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gadba6790898ce4029c20a34b898ce73c1">   30</a></span><span class="keyword">typedef</span> BYTE <a class="code hl_typedef" href="group__pff__driver.html#gadba6790898ce4029c20a34b898ce73c1">DSTATUS</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gaacdfef1dad6565f65c26d12fe0ea4b2b">   33</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2ba2ea4b6ef3fffc17dd1d38ab5c2837737">   34</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2ba2ea4b6ef3fffc17dd1d38ab5c2837737">RES_OK</a> = 0,     </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2ba78011f5557679ec178fb40bd21e89840">   35</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2ba78011f5557679ec178fb40bd21e89840">RES_ERROR</a>,      </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2baad64c27c69eb1ff39ae67c5f77bb2b1d">   36</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2baad64c27c69eb1ff39ae67c5f77bb2b1d">RES_NOTRDY</a>,     </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2baf4dcc07fd46310b5495fa8025c89a9f3">   37</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2baf4dcc07fd46310b5495fa8025c89a9f3">RES_PARERR</a>      </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>} <a class="code hl_enumeration" href="group__pff__driver.html#gaacdfef1dad6565f65c26d12fe0ea4b2b">DRESULT</a>;</div>
+</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">/*---------------------------------------*/</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">/* Prototypes for disk control functions */</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>DSTATUS disk_initialize (<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>DRESULT disk_readp (BYTE* buff, DWORD sector, UINT offser, UINT count);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>DRESULT disk_writep (<span class="keyword">const</span> BYTE* buff, DWORD sc);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#define STA_NOINIT      0x01    </span><span class="comment">/* Drive not initialized */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#define STA_NODISK      0x02    </span><span class="comment">/* No medium in the drive */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif  </span><span class="comment">/* _DISKIO_DEFINED */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">/*---------------------------------------*/</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">/* Prototypes for disk control functions */</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><a class="code hl_typedef" href="group__pff__driver.html#gadba6790898ce4029c20a34b898ce73c1">DSTATUS</a> <a class="code hl_function" href="group__pff__driver.html#ga0a2a0e7f731987250e733562ce246d4f">disk_initialize</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><a class="code hl_enumeration" href="group__pff__driver.html#gaacdfef1dad6565f65c26d12fe0ea4b2b">DRESULT</a> <a class="code hl_function" href="group__pff__driver.html#ga32624f66a9365e1ccd8f7cb77aa28c83">disk_readp</a>(BYTE* buff, DWORD sector, UINT offset, UINT count);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><a class="code hl_enumeration" href="group__pff__driver.html#gaacdfef1dad6565f65c26d12fe0ea4b2b">DRESULT</a> <a class="code hl_function" href="group__pff__driver.html#gaea83cf2be0b6a9c8066694b06b775a7d">disk_writep</a>(<span class="keyword">const</span> BYTE* buff, DWORD sc);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">/* Disk Status Bits */</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gabd6503c70d862b979a3f7080a59e9acd">   68</a></span><span class="preprocessor">#define STA_NOINIT      0x01    </span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gaec625080763d6cf487e550a6c9a2dd19">   69</a></span><span class="preprocessor">#define STA_NODISK      0x02    </span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif  </span><span class="comment">/* _DISKIO_DEFINED */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agroup__pff__driver_html_ga0a2a0e7f731987250e733562ce246d4f"><div class="ttname"><a href="group__pff__driver.html#ga0a2a0e7f731987250e733562ce246d4f">disk_initialize</a></div><div class="ttdeci">DSTATUS disk_initialize(void)</div><div class="ttdoc">Initialize the Disk Drive (SD Card).</div><div class="ttdef"><b>Definition</b> diskio.c:206</div></div>
+<div class="ttc" id="agroup__pff__driver_html_ga32624f66a9365e1ccd8f7cb77aa28c83"><div class="ttname"><a href="group__pff__driver.html#ga32624f66a9365e1ccd8f7cb77aa28c83">disk_readp</a></div><div class="ttdeci">DRESULT disk_readp(BYTE *buff, DWORD sector, UINT offset, UINT count)</div><div class="ttdoc">Read partial sector from the disk.</div><div class="ttdef"><b>Definition</b> diskio.c:295</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gaacdfef1dad6565f65c26d12fe0ea4b2b"><div class="ttname"><a href="group__pff__driver.html#gaacdfef1dad6565f65c26d12fe0ea4b2b">DRESULT</a></div><div class="ttdeci">DRESULT</div><div class="ttdoc">Results of Disk Functions.</div><div class="ttdef"><b>Definition</b> diskio.h:33</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gadba6790898ce4029c20a34b898ce73c1"><div class="ttname"><a href="group__pff__driver.html#gadba6790898ce4029c20a34b898ce73c1">DSTATUS</a></div><div class="ttdeci">BYTE DSTATUS</div><div class="ttdoc">Status of Disk Functions.</div><div class="ttdef"><b>Definition</b> diskio.h:30</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gaea83cf2be0b6a9c8066694b06b775a7d"><div class="ttname"><a href="group__pff__driver.html#gaea83cf2be0b6a9c8066694b06b775a7d">disk_writep</a></div><div class="ttdeci">DRESULT disk_writep(const BYTE *buff, DWORD sc)</div><div class="ttdoc">Write partial sector to the disk.</div><div class="ttdef"><b>Definition</b> diskio.c:343</div></div>
+<div class="ttc" id="agroup__pff__driver_html_ggaacdfef1dad6565f65c26d12fe0ea4b2ba2ea4b6ef3fffc17dd1d38ab5c2837737"><div class="ttname"><a href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2ba2ea4b6ef3fffc17dd1d38ab5c2837737">RES_OK</a></div><div class="ttdeci">@ RES_OK</div><div class="ttdef"><b>Definition</b> diskio.h:34</div></div>
+<div class="ttc" id="agroup__pff__driver_html_ggaacdfef1dad6565f65c26d12fe0ea4b2ba78011f5557679ec178fb40bd21e89840"><div class="ttname"><a href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2ba78011f5557679ec178fb40bd21e89840">RES_ERROR</a></div><div class="ttdeci">@ RES_ERROR</div><div class="ttdef"><b>Definition</b> diskio.h:35</div></div>
+<div class="ttc" id="agroup__pff__driver_html_ggaacdfef1dad6565f65c26d12fe0ea4b2baad64c27c69eb1ff39ae67c5f77bb2b1d"><div class="ttname"><a href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2baad64c27c69eb1ff39ae67c5f77bb2b1d">RES_NOTRDY</a></div><div class="ttdeci">@ RES_NOTRDY</div><div class="ttdef"><b>Definition</b> diskio.h:36</div></div>
+<div class="ttc" id="agroup__pff__driver_html_ggaacdfef1dad6565f65c26d12fe0ea4b2baf4dcc07fd46310b5495fa8025c89a9f3"><div class="ttname"><a href="group__pff__driver.html#ggaacdfef1dad6565f65c26d12fe0ea4b2baf4dcc07fd46310b5495fa8025c89a9f3">RES_PARERR</a></div><div class="ttdeci">@ RES_PARERR</div><div class="ttdef"><b>Definition</b> diskio.h:37</div></div>
 <div class="ttc" id="apff_8h_html"><div class="ttname"><a href="pff_8h.html">pff.h</a></div><div class="ttdoc">Petit FatFs - FAT file system module interface.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -114,7 +123,7 @@ $(function(){initNavTree('diskio_8h_source.html','',''); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>lib</b></li><li class="navelem"><b>pff</b></li><li class="navelem"><b>diskio.h</b></li>
+    <li class="navelem"><b>lib</b></li><li class="navelem"><b>pff</b></li><li class="navelem"><a href="diskio_8h.html">diskio.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
   </ul>
 </div>

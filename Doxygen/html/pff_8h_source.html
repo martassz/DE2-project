@@ -63,181 +63,204 @@ $(function(){initNavTree('pff_8h_source.html','',''); });
   <div class="headertitle"><div class="title">pff.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="pff_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/  Petit FatFs - FAT file system module include file  R0.03a</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">/----------------------------------------------------------------------------/</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">/ Petit FatFs module is an open source software to implement FAT file system to</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">/ small embedded systems. This is a free software and is opened for education,</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">/ research and commercial developments under license policy of following trems.</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">/</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">/  Copyright (C) 2019, ChaN, all right reserved.</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">/</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">/ * The Petit FatFs module is a free software and there is NO WARRANTY.</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">/ * No restriction on use. You can use, modify and redistribute it for</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">/   personal, non-profit or commercial use UNDER YOUR RESPONSIBILITY.</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">/ * Redistributions of source code must retain the above copyright notice.</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">/</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">/----------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#ifndef PF_DEFINED</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#define PF_DEFINED  8088    </span><span class="comment">/* Revision ID */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &quot;pffconf.h&quot;</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#if PF_DEFINED != PFCONF_DEF</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#error Wrong configuration file (pffconf.h).</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">/* Integer types used for FatFs API */</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#if defined(_WIN32) </span><span class="comment">/* Main development platform */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#include &lt;windows.h&gt;</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#elif (defined(__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &gt;= 199901L) || defined(__cplusplus)    </span><span class="comment">/* C99 or later */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>    UINT;   <span class="comment">/* int must be 16-bit or 32-bit */</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>   BYTE;   <span class="comment">/* char must be 8-bit */</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">typedef</span> uint16_t        WORD;   <span class="comment">/* 16-bit unsigned integer */</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">typedef</span> uint16_t        WCHAR;  <span class="comment">/* 16-bit unsigned integer */</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">typedef</span> uint32_t        DWORD;  <span class="comment">/* 32-bit unsigned integer */</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#else   </span><span class="comment">/* Earlier than C99 */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>    UINT;   <span class="comment">/* int must be 16-bit or 32-bit */</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>   BYTE;   <span class="comment">/* char must be 8-bit */</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  WORD;   <span class="comment">/* 16-bit unsigned integer */</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  WCHAR;  <span class="comment">/* 16-bit unsigned integer */</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>   DWORD;  <span class="comment">/* 32-bit unsigned integer */</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#define PF_INTDEF 1</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#if PF_FS_FAT32</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#define CLUST   DWORD</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#define CLUST   WORD</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">/* File system object structure */</span></div>
+<a href="pff_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">/  Petit FatFs - FAT file system module include file  R0.03a</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/----------------------------------------------------------------------------/</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">/ Petit FatFs module is an open source software to implement FAT file system to</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/ small embedded systems. This is a free software and is opened for education,</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/ research and commercial developments under license policy of following trems.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">/</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/  Copyright (C) 2019, ChaN, all right reserved.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/ * The Petit FatFs module is a free software and there is NO WARRANTY.</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/ * No restriction on use. You can use, modify and redistribute it for</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/   personal, non-profit or commercial use UNDER YOUR RESPONSIBILITY.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/ * Redistributions of source code must retain the above copyright notice.</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/----------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#ifndef PF_DEFINED</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#define PF_DEFINED  8088    </span><span class="comment">/* Revision ID */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#if defined(_WIN32) </span><span class="comment">/* Main development platform */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#include &lt;windows.h&gt;</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#elif (defined(__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &gt;= 199901L) || defined(__cplusplus)    </span><span class="comment">/* C99 or later */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>    UINT;   <span class="comment">/* int must be 16-bit or 32-bit */</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>   BYTE;   <span class="comment">/* char must be 8-bit */</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword">typedef</span> uint16_t        WORD;   <span class="comment">/* 16-bit unsigned integer */</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">typedef</span> uint16_t        WCHAR;  <span class="comment">/* 16-bit unsigned integer */</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">typedef</span> uint32_t        DWORD;  <span class="comment">/* 32-bit unsigned integer */</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#else   </span><span class="comment">/* Earlier than C99 */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>    UINT;   <span class="comment">/* int must be 16-bit or 32-bit */</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>   BYTE;   <span class="comment">/* char must be 8-bit */</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  WORD;   <span class="comment">/* 16-bit unsigned integer */</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>  WCHAR;  <span class="comment">/* 16-bit unsigned integer */</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>   DWORD;  <span class="comment">/* 32-bit unsigned integer */</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#define PF_INTDEF 1</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#if PF_FS_FAT32</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#define CLUST   DWORD</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#define CLUST   WORD</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="foldopen" id="foldopen00075" data-start="{" data-end="};">
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html">   75</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    BYTE    fs_type;    <span class="comment">/* FAT sub type */</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    BYTE    flag;       <span class="comment">/* File status flags */</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    BYTE    csize;      <span class="comment">/* Number of sectors per cluster */</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    BYTE    pad1;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    WORD    n_rootdir;  <span class="comment">/* Number of root directory entries (0 on FAT32) */</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    CLUST   n_fatent;   <span class="comment">/* Number of FAT entries (= number of clusters + 2) */</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    DWORD   fatbase;    <span class="comment">/* FAT start sector */</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    DWORD   dirbase;    <span class="comment">/* Root directory start sector (Cluster# on FAT32) */</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    DWORD   database;   <span class="comment">/* Data start sector */</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    DWORD   fptr;       <span class="comment">/* File R/W pointer */</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    DWORD   fsize;      <span class="comment">/* File size */</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    CLUST   org_clust;  <span class="comment">/* File start cluster */</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    CLUST   curr_clust; <span class="comment">/* File current cluster */</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    DWORD   dsect;      <span class="comment">/* File current data sector */</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>} <a class="code hl_struct" href="struct_f_a_t_f_s.html">FATFS</a>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">/* -- File system object structure ------------------------------------- */</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="foldopen" id="foldopen00078" data-start="{" data-end="};">
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html">   78</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#a3630ef0b29c45ef8e0c1de639efab754">   79</a></span>    BYTE    <a class="code hl_variable" href="struct_f_a_t_f_s.html#a3630ef0b29c45ef8e0c1de639efab754">fs_type</a>;    </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#abb2c49aaa8df55e1e1d8cb0c5e04a3bf">   80</a></span>    BYTE    <a class="code hl_variable" href="struct_f_a_t_f_s.html#abb2c49aaa8df55e1e1d8cb0c5e04a3bf">flag</a>;       </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#ace95d33f1aefff4c3e821cf8eac7ec3e">   81</a></span>    BYTE    <a class="code hl_variable" href="struct_f_a_t_f_s.html#ace95d33f1aefff4c3e821cf8eac7ec3e">csize</a>;      </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    BYTE    pad1;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#a22e74fc44cd5274ba7c3b18d5e357697">   83</a></span>    WORD    <a class="code hl_variable" href="struct_f_a_t_f_s.html#a22e74fc44cd5274ba7c3b18d5e357697">n_rootdir</a>;  </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#a55178439278cb34cae4a6394164b809e">   84</a></span>    CLUST   <a class="code hl_variable" href="struct_f_a_t_f_s.html#a55178439278cb34cae4a6394164b809e">n_fatent</a>;   </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#a74e60540a346de6eb9f0c13d6203efa1">   85</a></span>    DWORD   <a class="code hl_variable" href="struct_f_a_t_f_s.html#a74e60540a346de6eb9f0c13d6203efa1">fatbase</a>;    </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#aebfa6556d8f94e951a8b2c1eb740e9a1">   86</a></span>    DWORD   <a class="code hl_variable" href="struct_f_a_t_f_s.html#aebfa6556d8f94e951a8b2c1eb740e9a1">dirbase</a>;    </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#a112ba7d33529e5c9fda3b950fff01180">   87</a></span>    DWORD   <a class="code hl_variable" href="struct_f_a_t_f_s.html#a112ba7d33529e5c9fda3b950fff01180">database</a>;   </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#a0f65af32a2d036c560e66177961b9b22">   88</a></span>    DWORD   <a class="code hl_variable" href="struct_f_a_t_f_s.html#a0f65af32a2d036c560e66177961b9b22">fptr</a>;       </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#af70a0afd16367837984d6205cbfca308">   89</a></span>    DWORD   <a class="code hl_variable" href="struct_f_a_t_f_s.html#af70a0afd16367837984d6205cbfca308">fsize</a>;      </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#a5203f761bacf25758b7e736215f74349">   90</a></span>    CLUST   <a class="code hl_variable" href="struct_f_a_t_f_s.html#a5203f761bacf25758b7e736215f74349">org_clust</a>;  </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#a32da77ccc2ccbe19278c7889417fb9a3">   91</a></span>    CLUST   <a class="code hl_variable" href="struct_f_a_t_f_s.html#a32da77ccc2ccbe19278c7889417fb9a3">curr_clust</a>; </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="struct_f_a_t_f_s.html#a272171f74215002aba31a89428f1d290">   92</a></span>    DWORD   <a class="code hl_variable" href="struct_f_a_t_f_s.html#a272171f74215002aba31a89428f1d290">dsect</a>;      </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>} <a class="code hl_struct" href="struct_f_a_t_f_s.html">FATFS</a>;</div>
 </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">/* Directory object structure */</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="foldopen" id="foldopen00096" data-start="{" data-end="};">
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="struct_d_i_r.html">   96</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    WORD    index;      <span class="comment">/* Current read/write index number */</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    BYTE*   fn;         <span class="comment">/* Pointer to the SFN (in/out) {file[8],ext[3],status[1]} */</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    CLUST   sclust;     <span class="comment">/* Table start cluster (0:Static table) */</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    CLUST   clust;      <span class="comment">/* Current cluster */</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    DWORD   sect;       <span class="comment">/* Current sector */</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>} <a class="code hl_struct" href="struct_d_i_r.html">DIR</a>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">/* -- Directory object structure --------------------------------------- */</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="};">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="struct_d_i_r.html">   98</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="struct_d_i_r.html#ab7c5089b70ce76bcd61abe615ed2a42b">   99</a></span>    WORD    <a class="code hl_variable" href="struct_d_i_r.html#ab7c5089b70ce76bcd61abe615ed2a42b">index</a>;      </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="struct_d_i_r.html#a34e961714af3bc25c08d5832cca23204">  100</a></span>    BYTE*   <a class="code hl_variable" href="struct_d_i_r.html#a34e961714af3bc25c08d5832cca23204">fn</a>;         </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="struct_d_i_r.html#aada1acd6ce100ead798e712b18c49547">  101</a></span>    CLUST   <a class="code hl_variable" href="struct_d_i_r.html#aada1acd6ce100ead798e712b18c49547">sclust</a>;     </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="struct_d_i_r.html#aad779eab97ffc889755c8b483fbf9eb5">  102</a></span>    CLUST   <a class="code hl_variable" href="struct_d_i_r.html#aad779eab97ffc889755c8b483fbf9eb5">clust</a>;      </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="struct_d_i_r.html#a3e49e0860170e0fd9fc3e891b0d59975">  103</a></span>    DWORD   <a class="code hl_variable" href="struct_d_i_r.html#a3e49e0860170e0fd9fc3e891b0d59975">sect</a>;       </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>} <a class="code hl_struct" href="struct_d_i_r.html">DIR</a>;</div>
 </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">/* File status structure */</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="foldopen" id="foldopen00108" data-start="{" data-end="};">
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="struct_f_i_l_i_n_f_o.html">  108</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    DWORD   fsize;      <span class="comment">/* File size */</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    WORD    fdate;      <span class="comment">/* Last modified date */</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    WORD    ftime;      <span class="comment">/* Last modified time */</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    BYTE    fattrib;    <span class="comment">/* Attribute */</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordtype">char</span>    fname[13];  <span class="comment">/* File name */</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>} <a class="code hl_struct" href="struct_f_i_l_i_n_f_o.html">FILINFO</a>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">/* -- File status structure -------------------------------------------- */</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="foldopen" id="foldopen00109" data-start="{" data-end="};">
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="struct_f_i_l_i_n_f_o.html">  109</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="struct_f_i_l_i_n_f_o.html#af70a0afd16367837984d6205cbfca308">  110</a></span>    DWORD   <a class="code hl_variable" href="struct_f_i_l_i_n_f_o.html#af70a0afd16367837984d6205cbfca308">fsize</a>;      </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="struct_f_i_l_i_n_f_o.html#af49edeb97b10af8854cc15a05947a7d4">  111</a></span>    WORD    <a class="code hl_variable" href="struct_f_i_l_i_n_f_o.html#af49edeb97b10af8854cc15a05947a7d4">fdate</a>;      </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="struct_f_i_l_i_n_f_o.html#adb685b4c58c087d1cd790afb710001cb">  112</a></span>    WORD    <a class="code hl_variable" href="struct_f_i_l_i_n_f_o.html#adb685b4c58c087d1cd790afb710001cb">ftime</a>;      </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="struct_f_i_l_i_n_f_o.html#a8d28e8b20d001f36bf6099d312384fbd">  113</a></span>    BYTE    <a class="code hl_variable" href="struct_f_i_l_i_n_f_o.html#a8d28e8b20d001f36bf6099d312384fbd">fattrib</a>;    </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="struct_f_i_l_i_n_f_o.html#a892e7cf177f62142700c31c64dedb50b">  114</a></span>    <span class="keywordtype">char</span>    <a class="code hl_variable" href="struct_f_i_l_i_n_f_o.html#a892e7cf177f62142700c31c64dedb50b">fname</a>[13];  </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>} <a class="code hl_struct" href="struct_f_i_l_i_n_f_o.html">FILINFO</a>;</div>
 </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">/* File function return code (FRESULT) */</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">/* -- File function return code (FRESULT) ------------------------------ */</span></div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    FR_OK = 0,          <span class="comment">/* 0 */</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    FR_DISK_ERR,        <span class="comment">/* 1 */</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    FR_NOT_READY,       <span class="comment">/* 2 */</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    FR_NO_FILE,         <span class="comment">/* 3 */</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    FR_NOT_OPENED,      <span class="comment">/* 4 */</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    FR_NOT_ENABLED,     <span class="comment">/* 5 */</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    FR_NO_FILESYSTEM    <span class="comment">/* 6 */</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>} FRESULT;</div>
+<div class="foldopen" id="foldopen00120" data-start="{" data-end="};">
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">  120</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca62fce5cd9df008f8fc85f99706bda5f1">  121</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca62fce5cd9df008f8fc85f99706bda5f1">FR_OK</a> = 0,          </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca97dee4a6b485dc8f91f37486092dfe34">  122</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca97dee4a6b485dc8f91f37486092dfe34">FR_DISK_ERR</a>,        </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44cac9894bed3e8632ede8d2712235fa8e45">  123</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44cac9894bed3e8632ede8d2712235fa8e45">FR_NOT_READY</a>,       </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca97da8f98fc2e66d8fa7847f9ebb19b8c">  124</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca97da8f98fc2e66d8fa7847f9ebb19b8c">FR_NO_FILE</a>,         </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca196c8de0d4f775323f10ab831adc856e">  125</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca196c8de0d4f775323f10ab831adc856e">FR_NOT_OPENED</a>,      </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44cafc56605c68aaffab4a428339a8bd600d">  126</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44cafc56605c68aaffab4a428339a8bd600d">FR_NOT_ENABLED</a>,     </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca086154b5fee763f28c49fd0e2c1cb463">  127</a></span>    <a class="code hl_enumvalue" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca086154b5fee763f28c49fd0e2c1cb463">FR_NO_FILESYSTEM</a>    </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>} <a class="code hl_enumeration" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>;</div>
+</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">/*--------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">/* Petit FatFs module application interface                     */</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>FRESULT pf_mount (<a class="code hl_struct" href="struct_f_a_t_f_s.html">FATFS</a>* <a class="code hl_variable" href="sdlog_8c.html#ae5bcde72e0e0b29ec86d00ba3e5cd51f">fs</a>);                               <span class="comment">/* Mount/Unmount a logical drive */</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>FRESULT pf_open (<span class="keyword">const</span> <span class="keywordtype">char</span>* path);                         <span class="comment">/* Open a file */</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>FRESULT pf_read (<span class="keywordtype">void</span>* buff, UINT btr, UINT* br);           <span class="comment">/* Read data from the open file */</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>FRESULT pf_write (<span class="keyword">const</span> <span class="keywordtype">void</span>* buff, UINT btw, UINT* bw);    <span class="comment">/* Write data to the open file */</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>FRESULT pf_lseek (DWORD ofs);                               <span class="comment">/* Move file pointer of the open file */</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>FRESULT pf_opendir (<a class="code hl_struct" href="struct_d_i_r.html">DIR</a>* dj, <span class="keyword">const</span> <span class="keywordtype">char</span>* path);             <span class="comment">/* Open a directory */</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>FRESULT pf_readdir (<a class="code hl_struct" href="struct_d_i_r.html">DIR</a>* dj, <a class="code hl_struct" href="struct_f_i_l_i_n_f_o.html">FILINFO</a>* fno);                 <span class="comment">/* Read a directory item from the open directory */</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">/*--------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">/* Flags and offset address                                     */</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">/* File status flag (FATFS.flag) */</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#define FA_OPENED   0x01</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="preprocessor">#define FA_WPRT     0x02</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="preprocessor">#define FA__WIP     0x40</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment">/* FAT sub type (FATFS.fs_type) */</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="preprocessor">#define FS_FAT12    1</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="preprocessor">#define FS_FAT16    2</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="preprocessor">#define FS_FAT32    3</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">/* File attribute bits for directory entry */</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="preprocessor">#define AM_RDO  0x01    </span><span class="comment">/* Read only */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="preprocessor">#define AM_HID  0x02    </span><span class="comment">/* Hidden */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="preprocessor">#define AM_SYS  0x04    </span><span class="comment">/* System */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="preprocessor">#define AM_VOL  0x08    </span><span class="comment">/* Volume label */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="preprocessor">#define AM_LFN  0x0F    </span><span class="comment">/* LFN entry */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="preprocessor">#define AM_DIR  0x10    </span><span class="comment">/* Directory */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="preprocessor">#define AM_ARC  0x20    </span><span class="comment">/* Archive */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="preprocessor">#define AM_MASK 0x3F    </span><span class="comment">/* Mask of defined bits */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>}</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="preprocessor">#endif </span><span class="comment">/* _PFATFS */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">/* -- Petit FatFs module application interface ------------------------- */</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><a class="code hl_enumeration" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a> <a class="code hl_function" href="group__pff__driver.html#gad1284e7022455b6eaf14176afcf2374c">pf_mount</a> (<a class="code hl_struct" href="struct_f_a_t_f_s.html">FATFS</a>* <a class="code hl_variable" href="sdlog_8c.html#ae5bcde72e0e0b29ec86d00ba3e5cd51f">fs</a>);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><a class="code hl_enumeration" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a> <a class="code hl_function" href="group__pff__driver.html#gacb633554872f5dd609f5bb507cf57b20">pf_open</a> (<span class="keyword">const</span> <span class="keywordtype">char</span>* path);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga4c0cf23d8b1ef29708dc2582f7857195">  154</a></span><a class="code hl_enumeration" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a> <a class="code hl_function" href="group__pff__driver.html#ga4c0cf23d8b1ef29708dc2582f7857195">pf_read</a> (<span class="keywordtype">void</span>* buff, UINT btr, UINT* br);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gac963c34444665d193f9350884d388836">  163</a></span><a class="code hl_enumeration" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a> <a class="code hl_function" href="group__pff__driver.html#gac963c34444665d193f9350884d388836">pf_write</a> (<span class="keyword">const</span> <span class="keywordtype">void</span>* buff, UINT btw, UINT* bw);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga65853bdcaf0be6196211856875ad405d">  170</a></span><a class="code hl_enumeration" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a> <a class="code hl_function" href="group__pff__driver.html#ga65853bdcaf0be6196211856875ad405d">pf_lseek</a> (DWORD ofs);</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga627b0189dc01f2d4182234dd1e893458">  178</a></span><a class="code hl_enumeration" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a> <a class="code hl_function" href="group__pff__driver.html#ga627b0189dc01f2d4182234dd1e893458">pf_opendir</a> (<a class="code hl_struct" href="struct_d_i_r.html">DIR</a>* dj, <span class="keyword">const</span> <span class="keywordtype">char</span>* path);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga5cecf1cccc471007c47c6e212cba9475">  186</a></span><a class="code hl_enumeration" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a> <a class="code hl_function" href="group__pff__driver.html#ga5cecf1cccc471007c47c6e212cba9475">pf_readdir</a> (<a class="code hl_struct" href="struct_d_i_r.html">DIR</a>* dj, <a class="code hl_struct" href="struct_f_i_l_i_n_f_o.html">FILINFO</a>* fno);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="comment">/* -- Flags and offset address ----------------------------------------- */</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">/* File status flag (FATFS.flag) */</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="preprocessor">#define FA_OPENED   0x01</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="preprocessor">#define FA_WPRT     0x02</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="preprocessor">#define FA__WIP     0x40</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">/* FAT sub type (FATFS.fs_type) */</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="preprocessor">#define FS_FAT12    1</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="preprocessor">#define FS_FAT16    2</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="preprocessor">#define FS_FAT32    3</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">/* File attribute bits for directory entry */</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="preprocessor">#define AM_RDO  0x01    </span><span class="comment">/* Read only */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="preprocessor">#define AM_HID  0x02    </span><span class="comment">/* Hidden */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="preprocessor">#define AM_SYS  0x04    </span><span class="comment">/* System */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="preprocessor">#define AM_VOL  0x08    </span><span class="comment">/* Volume label */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">#define AM_LFN  0x0F    </span><span class="comment">/* LFN entry */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="preprocessor">#define AM_DIR  0x10    </span><span class="comment">/* Directory */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">#define AM_ARC  0x20    </span><span class="comment">/* Archive */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="preprocessor">#define AM_MASK 0x3F    </span><span class="comment">/* Mask of defined bits */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>}</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> <span class="comment">// End of pff_driver</span> <span class="comment">// End of drivers</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="preprocessor">#endif </span><span class="comment">/* _PFATFS */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agroup__pff__driver_html_ga49d0171ecbd362cda5680a0d360db44c"><div class="ttname"><a href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a></div><div class="ttdeci">FRESULT</div><div class="ttdef"><b>Definition</b> pff.h:120</div></div>
+<div class="ttc" id="agroup__pff__driver_html_ga4c0cf23d8b1ef29708dc2582f7857195"><div class="ttname"><a href="group__pff__driver.html#ga4c0cf23d8b1ef29708dc2582f7857195">pf_read</a></div><div class="ttdeci">FRESULT pf_read(void *buff, UINT btr, UINT *br)</div><div class="ttdoc">Read data from the open file.</div></div>
+<div class="ttc" id="agroup__pff__driver_html_ga5cecf1cccc471007c47c6e212cba9475"><div class="ttname"><a href="group__pff__driver.html#ga5cecf1cccc471007c47c6e212cba9475">pf_readdir</a></div><div class="ttdeci">FRESULT pf_readdir(DIR *dj, FILINFO *fno)</div><div class="ttdoc">Read a directory item from the open directory.</div></div>
+<div class="ttc" id="agroup__pff__driver_html_ga627b0189dc01f2d4182234dd1e893458"><div class="ttname"><a href="group__pff__driver.html#ga627b0189dc01f2d4182234dd1e893458">pf_opendir</a></div><div class="ttdeci">FRESULT pf_opendir(DIR *dj, const char *path)</div><div class="ttdoc">Open a directory.</div></div>
+<div class="ttc" id="agroup__pff__driver_html_ga65853bdcaf0be6196211856875ad405d"><div class="ttname"><a href="group__pff__driver.html#ga65853bdcaf0be6196211856875ad405d">pf_lseek</a></div><div class="ttdeci">FRESULT pf_lseek(DWORD ofs)</div><div class="ttdoc">Move file pointer of the open file.</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gac963c34444665d193f9350884d388836"><div class="ttname"><a href="group__pff__driver.html#gac963c34444665d193f9350884d388836">pf_write</a></div><div class="ttdeci">FRESULT pf_write(const void *buff, UINT btw, UINT *bw)</div><div class="ttdoc">Write data to the open file.</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gacb633554872f5dd609f5bb507cf57b20"><div class="ttname"><a href="group__pff__driver.html#gacb633554872f5dd609f5bb507cf57b20">pf_open</a></div><div class="ttdeci">FRESULT pf_open(const char *path)</div><div class="ttdoc">Open a file.</div><div class="ttdef"><b>Definition</b> pff.c:905</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gad1284e7022455b6eaf14176afcf2374c"><div class="ttname"><a href="group__pff__driver.html#gad1284e7022455b6eaf14176afcf2374c">pf_mount</a></div><div class="ttdeci">FRESULT pf_mount(FATFS *fs)</div><div class="ttdoc">Mount/Unmount a logical drive.</div><div class="ttdef"><b>Definition</b> pff.c:830</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gga49d0171ecbd362cda5680a0d360db44ca086154b5fee763f28c49fd0e2c1cb463"><div class="ttname"><a href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca086154b5fee763f28c49fd0e2c1cb463">FR_NO_FILESYSTEM</a></div><div class="ttdeci">@ FR_NO_FILESYSTEM</div><div class="ttdef"><b>Definition</b> pff.h:127</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gga49d0171ecbd362cda5680a0d360db44ca196c8de0d4f775323f10ab831adc856e"><div class="ttname"><a href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca196c8de0d4f775323f10ab831adc856e">FR_NOT_OPENED</a></div><div class="ttdeci">@ FR_NOT_OPENED</div><div class="ttdef"><b>Definition</b> pff.h:125</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gga49d0171ecbd362cda5680a0d360db44ca62fce5cd9df008f8fc85f99706bda5f1"><div class="ttname"><a href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca62fce5cd9df008f8fc85f99706bda5f1">FR_OK</a></div><div class="ttdeci">@ FR_OK</div><div class="ttdef"><b>Definition</b> pff.h:121</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gga49d0171ecbd362cda5680a0d360db44ca97da8f98fc2e66d8fa7847f9ebb19b8c"><div class="ttname"><a href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca97da8f98fc2e66d8fa7847f9ebb19b8c">FR_NO_FILE</a></div><div class="ttdeci">@ FR_NO_FILE</div><div class="ttdef"><b>Definition</b> pff.h:124</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gga49d0171ecbd362cda5680a0d360db44ca97dee4a6b485dc8f91f37486092dfe34"><div class="ttname"><a href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca97dee4a6b485dc8f91f37486092dfe34">FR_DISK_ERR</a></div><div class="ttdeci">@ FR_DISK_ERR</div><div class="ttdef"><b>Definition</b> pff.h:122</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gga49d0171ecbd362cda5680a0d360db44cac9894bed3e8632ede8d2712235fa8e45"><div class="ttname"><a href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44cac9894bed3e8632ede8d2712235fa8e45">FR_NOT_READY</a></div><div class="ttdeci">@ FR_NOT_READY</div><div class="ttdef"><b>Definition</b> pff.h:123</div></div>
+<div class="ttc" id="agroup__pff__driver_html_gga49d0171ecbd362cda5680a0d360db44cafc56605c68aaffab4a428339a8bd600d"><div class="ttname"><a href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44cafc56605c68aaffab4a428339a8bd600d">FR_NOT_ENABLED</a></div><div class="ttdeci">@ FR_NOT_ENABLED</div><div class="ttdef"><b>Definition</b> pff.h:126</div></div>
 <div class="ttc" id="asdlog_8c_html_ae5bcde72e0e0b29ec86d00ba3e5cd51f"><div class="ttname"><a href="sdlog_8c.html#ae5bcde72e0e0b29ec86d00ba3e5cd51f">fs</a></div><div class="ttdeci">FATFS fs</div><div class="ttdef"><b>Definition</b> sdlog.c:25</div></div>
-<div class="ttc" id="astruct_d_i_r_html"><div class="ttname"><a href="struct_d_i_r.html">DIR</a></div><div class="ttdef"><b>Definition</b> pff.h:96</div></div>
-<div class="ttc" id="astruct_f_a_t_f_s_html"><div class="ttname"><a href="struct_f_a_t_f_s.html">FATFS</a></div><div class="ttdef"><b>Definition</b> pff.h:75</div></div>
-<div class="ttc" id="astruct_f_i_l_i_n_f_o_html"><div class="ttname"><a href="struct_f_i_l_i_n_f_o.html">FILINFO</a></div><div class="ttdef"><b>Definition</b> pff.h:108</div></div>
+<div class="ttc" id="astruct_d_i_r_html"><div class="ttname"><a href="struct_d_i_r.html">DIR</a></div><div class="ttdef"><b>Definition</b> pff.h:98</div></div>
+<div class="ttc" id="astruct_d_i_r_html_a34e961714af3bc25c08d5832cca23204"><div class="ttname"><a href="struct_d_i_r.html#a34e961714af3bc25c08d5832cca23204">DIR::fn</a></div><div class="ttdeci">BYTE * fn</div><div class="ttdef"><b>Definition</b> pff.h:100</div></div>
+<div class="ttc" id="astruct_d_i_r_html_a3e49e0860170e0fd9fc3e891b0d59975"><div class="ttname"><a href="struct_d_i_r.html#a3e49e0860170e0fd9fc3e891b0d59975">DIR::sect</a></div><div class="ttdeci">DWORD sect</div><div class="ttdef"><b>Definition</b> pff.h:103</div></div>
+<div class="ttc" id="astruct_d_i_r_html_aad779eab97ffc889755c8b483fbf9eb5"><div class="ttname"><a href="struct_d_i_r.html#aad779eab97ffc889755c8b483fbf9eb5">DIR::clust</a></div><div class="ttdeci">CLUST clust</div><div class="ttdef"><b>Definition</b> pff.h:102</div></div>
+<div class="ttc" id="astruct_d_i_r_html_aada1acd6ce100ead798e712b18c49547"><div class="ttname"><a href="struct_d_i_r.html#aada1acd6ce100ead798e712b18c49547">DIR::sclust</a></div><div class="ttdeci">CLUST sclust</div><div class="ttdef"><b>Definition</b> pff.h:101</div></div>
+<div class="ttc" id="astruct_d_i_r_html_ab7c5089b70ce76bcd61abe615ed2a42b"><div class="ttname"><a href="struct_d_i_r.html#ab7c5089b70ce76bcd61abe615ed2a42b">DIR::index</a></div><div class="ttdeci">WORD index</div><div class="ttdef"><b>Definition</b> pff.h:99</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html"><div class="ttname"><a href="struct_f_a_t_f_s.html">FATFS</a></div><div class="ttdef"><b>Definition</b> pff.h:78</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_a0f65af32a2d036c560e66177961b9b22"><div class="ttname"><a href="struct_f_a_t_f_s.html#a0f65af32a2d036c560e66177961b9b22">FATFS::fptr</a></div><div class="ttdeci">DWORD fptr</div><div class="ttdef"><b>Definition</b> pff.h:88</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_a112ba7d33529e5c9fda3b950fff01180"><div class="ttname"><a href="struct_f_a_t_f_s.html#a112ba7d33529e5c9fda3b950fff01180">FATFS::database</a></div><div class="ttdeci">DWORD database</div><div class="ttdef"><b>Definition</b> pff.h:87</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_a22e74fc44cd5274ba7c3b18d5e357697"><div class="ttname"><a href="struct_f_a_t_f_s.html#a22e74fc44cd5274ba7c3b18d5e357697">FATFS::n_rootdir</a></div><div class="ttdeci">WORD n_rootdir</div><div class="ttdef"><b>Definition</b> pff.h:83</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_a272171f74215002aba31a89428f1d290"><div class="ttname"><a href="struct_f_a_t_f_s.html#a272171f74215002aba31a89428f1d290">FATFS::dsect</a></div><div class="ttdeci">DWORD dsect</div><div class="ttdef"><b>Definition</b> pff.h:92</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_a32da77ccc2ccbe19278c7889417fb9a3"><div class="ttname"><a href="struct_f_a_t_f_s.html#a32da77ccc2ccbe19278c7889417fb9a3">FATFS::curr_clust</a></div><div class="ttdeci">CLUST curr_clust</div><div class="ttdef"><b>Definition</b> pff.h:91</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_a3630ef0b29c45ef8e0c1de639efab754"><div class="ttname"><a href="struct_f_a_t_f_s.html#a3630ef0b29c45ef8e0c1de639efab754">FATFS::fs_type</a></div><div class="ttdeci">BYTE fs_type</div><div class="ttdef"><b>Definition</b> pff.h:79</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_a5203f761bacf25758b7e736215f74349"><div class="ttname"><a href="struct_f_a_t_f_s.html#a5203f761bacf25758b7e736215f74349">FATFS::org_clust</a></div><div class="ttdeci">CLUST org_clust</div><div class="ttdef"><b>Definition</b> pff.h:90</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_a55178439278cb34cae4a6394164b809e"><div class="ttname"><a href="struct_f_a_t_f_s.html#a55178439278cb34cae4a6394164b809e">FATFS::n_fatent</a></div><div class="ttdeci">CLUST n_fatent</div><div class="ttdef"><b>Definition</b> pff.h:84</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_a74e60540a346de6eb9f0c13d6203efa1"><div class="ttname"><a href="struct_f_a_t_f_s.html#a74e60540a346de6eb9f0c13d6203efa1">FATFS::fatbase</a></div><div class="ttdeci">DWORD fatbase</div><div class="ttdef"><b>Definition</b> pff.h:85</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_abb2c49aaa8df55e1e1d8cb0c5e04a3bf"><div class="ttname"><a href="struct_f_a_t_f_s.html#abb2c49aaa8df55e1e1d8cb0c5e04a3bf">FATFS::flag</a></div><div class="ttdeci">BYTE flag</div><div class="ttdef"><b>Definition</b> pff.h:80</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_ace95d33f1aefff4c3e821cf8eac7ec3e"><div class="ttname"><a href="struct_f_a_t_f_s.html#ace95d33f1aefff4c3e821cf8eac7ec3e">FATFS::csize</a></div><div class="ttdeci">BYTE csize</div><div class="ttdef"><b>Definition</b> pff.h:81</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_aebfa6556d8f94e951a8b2c1eb740e9a1"><div class="ttname"><a href="struct_f_a_t_f_s.html#aebfa6556d8f94e951a8b2c1eb740e9a1">FATFS::dirbase</a></div><div class="ttdeci">DWORD dirbase</div><div class="ttdef"><b>Definition</b> pff.h:86</div></div>
+<div class="ttc" id="astruct_f_a_t_f_s_html_af70a0afd16367837984d6205cbfca308"><div class="ttname"><a href="struct_f_a_t_f_s.html#af70a0afd16367837984d6205cbfca308">FATFS::fsize</a></div><div class="ttdeci">DWORD fsize</div><div class="ttdef"><b>Definition</b> pff.h:89</div></div>
+<div class="ttc" id="astruct_f_i_l_i_n_f_o_html"><div class="ttname"><a href="struct_f_i_l_i_n_f_o.html">FILINFO</a></div><div class="ttdef"><b>Definition</b> pff.h:109</div></div>
+<div class="ttc" id="astruct_f_i_l_i_n_f_o_html_a892e7cf177f62142700c31c64dedb50b"><div class="ttname"><a href="struct_f_i_l_i_n_f_o.html#a892e7cf177f62142700c31c64dedb50b">FILINFO::fname</a></div><div class="ttdeci">char fname[13]</div><div class="ttdef"><b>Definition</b> pff.h:114</div></div>
+<div class="ttc" id="astruct_f_i_l_i_n_f_o_html_a8d28e8b20d001f36bf6099d312384fbd"><div class="ttname"><a href="struct_f_i_l_i_n_f_o.html#a8d28e8b20d001f36bf6099d312384fbd">FILINFO::fattrib</a></div><div class="ttdeci">BYTE fattrib</div><div class="ttdef"><b>Definition</b> pff.h:113</div></div>
+<div class="ttc" id="astruct_f_i_l_i_n_f_o_html_adb685b4c58c087d1cd790afb710001cb"><div class="ttname"><a href="struct_f_i_l_i_n_f_o.html#adb685b4c58c087d1cd790afb710001cb">FILINFO::ftime</a></div><div class="ttdeci">WORD ftime</div><div class="ttdef"><b>Definition</b> pff.h:112</div></div>
+<div class="ttc" id="astruct_f_i_l_i_n_f_o_html_af49edeb97b10af8854cc15a05947a7d4"><div class="ttname"><a href="struct_f_i_l_i_n_f_o.html#af49edeb97b10af8854cc15a05947a7d4">FILINFO::fdate</a></div><div class="ttdeci">WORD fdate</div><div class="ttdef"><b>Definition</b> pff.h:111</div></div>
+<div class="ttc" id="astruct_f_i_l_i_n_f_o_html_af70a0afd16367837984d6205cbfca308"><div class="ttname"><a href="struct_f_i_l_i_n_f_o.html#af70a0afd16367837984d6205cbfca308">FILINFO::fsize</a></div><div class="ttdeci">DWORD fsize</div><div class="ttdef"><b>Definition</b> pff.h:110</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

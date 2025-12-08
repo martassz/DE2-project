@@ -63,49 +63,53 @@ $(function(){initNavTree('pffconf_8h_source.html','',''); });
   <div class="headertitle"><div class="title">pffconf.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
+<a href="pffconf_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">/  Petit FatFs - Configuration file  R0.03a</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/---------------------------------------------------------------------------*/</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#ifndef PFCONF_DEF</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#define PFCONF_DEF 8088 </span><span class="comment">/* Revision ID */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/ Function Configurations</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/---------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#define PF_USE_READ     1   </span><span class="comment">/* Enable pf_read() function */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#define PF_USE_DIR      0   </span><span class="comment">/* Enable pf_opendir() and pf_readdir() function */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#define PF_USE_LSEEK    1   </span><span class="comment">/* Enable pf_lseek() function */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#define PF_USE_WRITE    1   </span><span class="comment">/* Enable pf_write() function */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#define PF_FS_FAT12     0   </span><span class="comment">/* Enable FAT12 */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define PF_FS_FAT16     0   </span><span class="comment">/* Enable FAT16 */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#define PF_FS_FAT32     1   </span><span class="comment">/* Enable FAT32 */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">/ Locale and Namespace Configurations</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">/---------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#define PF_USE_LCC      0   </span><span class="comment">/* Allow lower case characters for path name */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#define PF_CODE_PAGE    437</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">/* Setting PF_CODE_PAGE to 0 disables code conversion function and</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">/  switching PF_USE_LCC to 1 is not allowed. */</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/ Function Configurations</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">/---------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga5051acb079e20a5de48b2f24a3e89b16">   20</a></span><span class="preprocessor">#define PF_USE_READ     1</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga803b9dba159ebce729ca700d3e2d25cd">   23</a></span><span class="preprocessor">#define PF_USE_DIR      0</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga718f50805092886bc6da2b0416efecc5">   26</a></span><span class="preprocessor">#define PF_USE_LSEEK    1</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gafba12d91a38e012c366c347590bdae75">   29</a></span><span class="preprocessor">#define PF_USE_WRITE    1</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">/ System Configurations</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">/---------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">/ File System Configurations</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">/---------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga4dc48ed82c8453a23eeeaf46829cbaf5">   36</a></span><span class="preprocessor">#define PF_FS_FAT12     0</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="group__pff__driver.html#ga171b918c2a453a309ac7a72c90888e76">   39</a></span><span class="preprocessor">#define PF_FS_FAT16     0</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gaf046f0531c88517b66281fad68a7bca2">   42</a></span><span class="preprocessor">#define PF_FS_FAT32     1</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">/*---------------------------------------------------------------------------/</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/ Locale and Namespace Configurations</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">/---------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gacef842516b695413453a15fbfee38067">   50</a></span><span class="preprocessor">#define PF_USE_LCC      0</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="group__pff__driver.html#gab5fb809815d88d5725d8b5db9a0a1764">   53</a></span><span class="preprocessor">#define PF_CODE_PAGE    437</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif </span><span class="comment">/* PFCONF_DEF */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>lib</b></li><li class="navelem"><b>pff</b></li><li class="navelem"><b>pffconf.h</b></li>
+    <li class="navelem"><b>lib</b></li><li class="navelem"><b>pff</b></li><li class="navelem"><a href="pffconf_8h.html">pffconf.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
   </ul>
 </div>

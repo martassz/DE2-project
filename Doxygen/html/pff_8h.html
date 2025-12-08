@@ -66,8 +66,7 @@ $(function(){initNavTree('pff_8h.html','',''); });
 
 <p>Petit FatFs - FAT file system module interface.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;pffconf.h&quot;</code><br />
-</div>
+
 <p><a href="pff_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -80,92 +79,88 @@ Data Structures</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ad975918e70119f718a36f48310cc942d" id="r_ad975918e70119f718a36f48310cc942d"><td class="memItemLeft" align="right" valign="top"><a id="ad975918e70119f718a36f48310cc942d" name="ad975918e70119f718a36f48310cc942d"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PF_DEFINED</b>&#160;&#160;&#160;8088    /* Revision ID */</td></tr>
-<tr class="memitem:a46144fcbcc050681ee634600e9b53a62" id="r_a46144fcbcc050681ee634600e9b53a62"><td class="memItemLeft" align="right" valign="top"><a id="a46144fcbcc050681ee634600e9b53a62" name="a46144fcbcc050681ee634600e9b53a62"></a>
+<tr class="memitem:ga46144fcbcc050681ee634600e9b53a62" id="r_ga46144fcbcc050681ee634600e9b53a62"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PF_INTDEF</b>&#160;&#160;&#160;1</td></tr>
-<tr class="memitem:afd637e83995aa8248e4ae45d3d1844d5" id="r_afd637e83995aa8248e4ae45d3d1844d5"><td class="memItemLeft" align="right" valign="top"><a id="afd637e83995aa8248e4ae45d3d1844d5" name="afd637e83995aa8248e4ae45d3d1844d5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLUST</b>&#160;&#160;&#160;DWORD</td></tr>
-<tr class="memitem:a0800e5558cb03ac386b4d50fff9e7a2f" id="r_a0800e5558cb03ac386b4d50fff9e7a2f"><td class="memItemLeft" align="right" valign="top"><a id="a0800e5558cb03ac386b4d50fff9e7a2f" name="a0800e5558cb03ac386b4d50fff9e7a2f"></a>
+<tr class="memitem:gafd637e83995aa8248e4ae45d3d1844d5" id="r_gafd637e83995aa8248e4ae45d3d1844d5"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLUST</b>&#160;&#160;&#160;WORD</td></tr>
+<tr class="memitem:ga0800e5558cb03ac386b4d50fff9e7a2f" id="r_ga0800e5558cb03ac386b4d50fff9e7a2f"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FA_OPENED</b>&#160;&#160;&#160;0x01</td></tr>
-<tr class="memitem:a8b853af55ed3ea9b716bac851afa45f7" id="r_a8b853af55ed3ea9b716bac851afa45f7"><td class="memItemLeft" align="right" valign="top"><a id="a8b853af55ed3ea9b716bac851afa45f7" name="a8b853af55ed3ea9b716bac851afa45f7"></a>
+<tr class="memitem:ga8b853af55ed3ea9b716bac851afa45f7" id="r_ga8b853af55ed3ea9b716bac851afa45f7"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FA_WPRT</b>&#160;&#160;&#160;0x02</td></tr>
-<tr class="memitem:a03b4d457e4d35842d07b8bfb34cdb53a" id="r_a03b4d457e4d35842d07b8bfb34cdb53a"><td class="memItemLeft" align="right" valign="top"><a id="a03b4d457e4d35842d07b8bfb34cdb53a" name="a03b4d457e4d35842d07b8bfb34cdb53a"></a>
+<tr class="memitem:ga03b4d457e4d35842d07b8bfb34cdb53a" id="r_ga03b4d457e4d35842d07b8bfb34cdb53a"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FA__WIP</b>&#160;&#160;&#160;0x40</td></tr>
-<tr class="memitem:aab755aa1b4f81f4aabee4a5d4738cfb0" id="r_aab755aa1b4f81f4aabee4a5d4738cfb0"><td class="memItemLeft" align="right" valign="top"><a id="aab755aa1b4f81f4aabee4a5d4738cfb0" name="aab755aa1b4f81f4aabee4a5d4738cfb0"></a>
+<tr class="memitem:gaab755aa1b4f81f4aabee4a5d4738cfb0" id="r_gaab755aa1b4f81f4aabee4a5d4738cfb0"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FS_FAT12</b>&#160;&#160;&#160;1</td></tr>
-<tr class="memitem:a7ef90a36d99edfc0138a2155a17a79b9" id="r_a7ef90a36d99edfc0138a2155a17a79b9"><td class="memItemLeft" align="right" valign="top"><a id="a7ef90a36d99edfc0138a2155a17a79b9" name="a7ef90a36d99edfc0138a2155a17a79b9"></a>
+<tr class="memitem:ga7ef90a36d99edfc0138a2155a17a79b9" id="r_ga7ef90a36d99edfc0138a2155a17a79b9"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FS_FAT16</b>&#160;&#160;&#160;2</td></tr>
-<tr class="memitem:ac63e0796095a789cefdbc3c3c676c9ce" id="r_ac63e0796095a789cefdbc3c3c676c9ce"><td class="memItemLeft" align="right" valign="top"><a id="ac63e0796095a789cefdbc3c3c676c9ce" name="ac63e0796095a789cefdbc3c3c676c9ce"></a>
+<tr class="memitem:gac63e0796095a789cefdbc3c3c676c9ce" id="r_gac63e0796095a789cefdbc3c3c676c9ce"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FS_FAT32</b>&#160;&#160;&#160;3</td></tr>
-<tr class="memitem:add6d85d1e7a02b4f6188783ef91a5f1e" id="r_add6d85d1e7a02b4f6188783ef91a5f1e"><td class="memItemLeft" align="right" valign="top"><a id="add6d85d1e7a02b4f6188783ef91a5f1e" name="add6d85d1e7a02b4f6188783ef91a5f1e"></a>
+<tr class="memitem:gadd6d85d1e7a02b4f6188783ef91a5f1e" id="r_gadd6d85d1e7a02b4f6188783ef91a5f1e"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>AM_RDO</b>&#160;&#160;&#160;0x01    /* Read only */</td></tr>
-<tr class="memitem:aa90c4c921c1955fd407d8bbf17f1674e" id="r_aa90c4c921c1955fd407d8bbf17f1674e"><td class="memItemLeft" align="right" valign="top"><a id="aa90c4c921c1955fd407d8bbf17f1674e" name="aa90c4c921c1955fd407d8bbf17f1674e"></a>
+<tr class="memitem:gaa90c4c921c1955fd407d8bbf17f1674e" id="r_gaa90c4c921c1955fd407d8bbf17f1674e"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>AM_HID</b>&#160;&#160;&#160;0x02    /* Hidden */</td></tr>
-<tr class="memitem:a1f25d5c17b5a3a6397b3398add8cdc15" id="r_a1f25d5c17b5a3a6397b3398add8cdc15"><td class="memItemLeft" align="right" valign="top"><a id="a1f25d5c17b5a3a6397b3398add8cdc15" name="a1f25d5c17b5a3a6397b3398add8cdc15"></a>
+<tr class="memitem:ga1f25d5c17b5a3a6397b3398add8cdc15" id="r_ga1f25d5c17b5a3a6397b3398add8cdc15"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>AM_SYS</b>&#160;&#160;&#160;0x04    /* System */</td></tr>
-<tr class="memitem:a5cfae62dabae0a54809e43b36685ce7c" id="r_a5cfae62dabae0a54809e43b36685ce7c"><td class="memItemLeft" align="right" valign="top"><a id="a5cfae62dabae0a54809e43b36685ce7c" name="a5cfae62dabae0a54809e43b36685ce7c"></a>
+<tr class="memitem:ga5cfae62dabae0a54809e43b36685ce7c" id="r_ga5cfae62dabae0a54809e43b36685ce7c"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>AM_VOL</b>&#160;&#160;&#160;0x08    /* Volume label */</td></tr>
-<tr class="memitem:a91161ef62e0e85ba3c2876d3d339473d" id="r_a91161ef62e0e85ba3c2876d3d339473d"><td class="memItemLeft" align="right" valign="top"><a id="a91161ef62e0e85ba3c2876d3d339473d" name="a91161ef62e0e85ba3c2876d3d339473d"></a>
+<tr class="memitem:ga91161ef62e0e85ba3c2876d3d339473d" id="r_ga91161ef62e0e85ba3c2876d3d339473d"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>AM_LFN</b>&#160;&#160;&#160;0x0F    /* LFN entry */</td></tr>
-<tr class="memitem:a3a9db44e978ed6c13b641e092d4cd7d3" id="r_a3a9db44e978ed6c13b641e092d4cd7d3"><td class="memItemLeft" align="right" valign="top"><a id="a3a9db44e978ed6c13b641e092d4cd7d3" name="a3a9db44e978ed6c13b641e092d4cd7d3"></a>
+<tr class="memitem:ga3a9db44e978ed6c13b641e092d4cd7d3" id="r_ga3a9db44e978ed6c13b641e092d4cd7d3"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>AM_DIR</b>&#160;&#160;&#160;0x10    /* Directory */</td></tr>
-<tr class="memitem:ae8174d00798e34e7c9e95898cb9e1a09" id="r_ae8174d00798e34e7c9e95898cb9e1a09"><td class="memItemLeft" align="right" valign="top"><a id="ae8174d00798e34e7c9e95898cb9e1a09" name="ae8174d00798e34e7c9e95898cb9e1a09"></a>
+<tr class="memitem:gae8174d00798e34e7c9e95898cb9e1a09" id="r_gae8174d00798e34e7c9e95898cb9e1a09"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>AM_ARC</b>&#160;&#160;&#160;0x20    /* Archive */</td></tr>
-<tr class="memitem:aefa78fd6b130faaca4e115602869b57c" id="r_aefa78fd6b130faaca4e115602869b57c"><td class="memItemLeft" align="right" valign="top"><a id="aefa78fd6b130faaca4e115602869b57c" name="aefa78fd6b130faaca4e115602869b57c"></a>
+<tr class="memitem:gaefa78fd6b130faaca4e115602869b57c" id="r_gaefa78fd6b130faaca4e115602869b57c"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>AM_MASK</b>&#160;&#160;&#160;0x3F    /* Mask of defined bits */</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a36cb3b01d81ffd844bbbfb54003e06ec" id="r_a36cb3b01d81ffd844bbbfb54003e06ec"><td class="memItemLeft" align="right" valign="top"><a id="a36cb3b01d81ffd844bbbfb54003e06ec" name="a36cb3b01d81ffd844bbbfb54003e06ec"></a>
+<tr class="memitem:ga36cb3b01d81ffd844bbbfb54003e06ec" id="r_ga36cb3b01d81ffd844bbbfb54003e06ec"><td class="memItemLeft" align="right" valign="top">
 typedef unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>UINT</b></td></tr>
-<tr class="memitem:a4ae1dab0fb4b072a66584546209e7d58" id="r_a4ae1dab0fb4b072a66584546209e7d58"><td class="memItemLeft" align="right" valign="top"><a id="a4ae1dab0fb4b072a66584546209e7d58" name="a4ae1dab0fb4b072a66584546209e7d58"></a>
+<tr class="memitem:ga4ae1dab0fb4b072a66584546209e7d58" id="r_ga4ae1dab0fb4b072a66584546209e7d58"><td class="memItemLeft" align="right" valign="top">
 typedef unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>BYTE</b></td></tr>
-<tr class="memitem:a197942eefa7db30960ae396d68339b97" id="r_a197942eefa7db30960ae396d68339b97"><td class="memItemLeft" align="right" valign="top"><a id="a197942eefa7db30960ae396d68339b97" name="a197942eefa7db30960ae396d68339b97"></a>
+<tr class="memitem:ga197942eefa7db30960ae396d68339b97" id="r_ga197942eefa7db30960ae396d68339b97"><td class="memItemLeft" align="right" valign="top">
 typedef unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>WORD</b></td></tr>
-<tr class="memitem:a570001c92f314285ad3e7139d8c58cf7" id="r_a570001c92f314285ad3e7139d8c58cf7"><td class="memItemLeft" align="right" valign="top"><a id="a570001c92f314285ad3e7139d8c58cf7" name="a570001c92f314285ad3e7139d8c58cf7"></a>
+<tr class="memitem:ga570001c92f314285ad3e7139d8c58cf7" id="r_ga570001c92f314285ad3e7139d8c58cf7"><td class="memItemLeft" align="right" valign="top">
 typedef unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>WCHAR</b></td></tr>
-<tr class="memitem:ad342ac907eb044443153a22f964bf0af" id="r_ad342ac907eb044443153a22f964bf0af"><td class="memItemLeft" align="right" valign="top"><a id="ad342ac907eb044443153a22f964bf0af" name="ad342ac907eb044443153a22f964bf0af"></a>
+<tr class="memitem:gad342ac907eb044443153a22f964bf0af" id="r_gad342ac907eb044443153a22f964bf0af"><td class="memItemLeft" align="right" valign="top">
 typedef unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>DWORD</b></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a49d0171ecbd362cda5680a0d360db44c" id="r_a49d0171ecbd362cda5680a0d360db44c"><td class="memItemLeft" align="right" valign="top"><a id="a49d0171ecbd362cda5680a0d360db44c" name="a49d0171ecbd362cda5680a0d360db44c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>FRESULT</b> { <br />
-&#160;&#160;<b>FR_OK</b> = 0
-, <b>FR_DISK_ERR</b>
-, <b>FR_NOT_READY</b>
-, <b>FR_NO_FILE</b>
+<tr class="memitem:ga49d0171ecbd362cda5680a0d360db44c" id="r_ga49d0171ecbd362cda5680a0d360db44c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a> { <br />
+&#160;&#160;<a class="el" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca62fce5cd9df008f8fc85f99706bda5f1">FR_OK</a> = 0
+, <a class="el" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca97dee4a6b485dc8f91f37486092dfe34">FR_DISK_ERR</a>
+, <a class="el" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44cac9894bed3e8632ede8d2712235fa8e45">FR_NOT_READY</a>
+, <a class="el" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca97da8f98fc2e66d8fa7847f9ebb19b8c">FR_NO_FILE</a>
 , <br />
-&#160;&#160;<b>FR_NOT_OPENED</b>
-, <b>FR_NOT_ENABLED</b>
-, <b>FR_NO_FILESYSTEM</b>
+&#160;&#160;<a class="el" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca196c8de0d4f775323f10ab831adc856e">FR_NOT_OPENED</a>
+, <a class="el" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44cafc56605c68aaffab4a428339a8bd600d">FR_NOT_ENABLED</a>
+, <a class="el" href="group__pff__driver.html#gga49d0171ecbd362cda5680a0d360db44ca086154b5fee763f28c49fd0e2c1cb463">FR_NO_FILESYSTEM</a>
 <br />
  }</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad1284e7022455b6eaf14176afcf2374c" id="r_ad1284e7022455b6eaf14176afcf2374c"><td class="memItemLeft" align="right" valign="top"><a id="ad1284e7022455b6eaf14176afcf2374c" name="ad1284e7022455b6eaf14176afcf2374c"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_mount</b> (<a class="el" href="struct_f_a_t_f_s.html">FATFS</a> *<a class="el" href="sdlog_8c.html#ae5bcde72e0e0b29ec86d00ba3e5cd51f">fs</a>)</td></tr>
-<tr class="memitem:acb633554872f5dd609f5bb507cf57b20" id="r_acb633554872f5dd609f5bb507cf57b20"><td class="memItemLeft" align="right" valign="top"><a id="acb633554872f5dd609f5bb507cf57b20" name="acb633554872f5dd609f5bb507cf57b20"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_open</b> (const char *path)</td></tr>
-<tr class="memitem:a4c0cf23d8b1ef29708dc2582f7857195" id="r_a4c0cf23d8b1ef29708dc2582f7857195"><td class="memItemLeft" align="right" valign="top"><a id="a4c0cf23d8b1ef29708dc2582f7857195" name="a4c0cf23d8b1ef29708dc2582f7857195"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_read</b> (void *buff, UINT btr, UINT *br)</td></tr>
-<tr class="memitem:ac963c34444665d193f9350884d388836" id="r_ac963c34444665d193f9350884d388836"><td class="memItemLeft" align="right" valign="top"><a id="ac963c34444665d193f9350884d388836" name="ac963c34444665d193f9350884d388836"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_write</b> (const void *buff, UINT btw, UINT *bw)</td></tr>
-<tr class="memitem:a65853bdcaf0be6196211856875ad405d" id="r_a65853bdcaf0be6196211856875ad405d"><td class="memItemLeft" align="right" valign="top"><a id="a65853bdcaf0be6196211856875ad405d" name="a65853bdcaf0be6196211856875ad405d"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_lseek</b> (DWORD ofs)</td></tr>
-<tr class="memitem:a627b0189dc01f2d4182234dd1e893458" id="r_a627b0189dc01f2d4182234dd1e893458"><td class="memItemLeft" align="right" valign="top"><a id="a627b0189dc01f2d4182234dd1e893458" name="a627b0189dc01f2d4182234dd1e893458"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_opendir</b> (<a class="el" href="struct_d_i_r.html">DIR</a> *dj, const char *path)</td></tr>
-<tr class="memitem:a5cecf1cccc471007c47c6e212cba9475" id="r_a5cecf1cccc471007c47c6e212cba9475"><td class="memItemLeft" align="right" valign="top"><a id="a5cecf1cccc471007c47c6e212cba9475" name="a5cecf1cccc471007c47c6e212cba9475"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_readdir</b> (<a class="el" href="struct_d_i_r.html">DIR</a> *dj, <a class="el" href="struct_f_i_l_i_n_f_o.html">FILINFO</a> *fno)</td></tr>
+<tr class="memitem:gad1284e7022455b6eaf14176afcf2374c" id="r_gad1284e7022455b6eaf14176afcf2374c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#gad1284e7022455b6eaf14176afcf2374c">pf_mount</a> (<a class="el" href="struct_f_a_t_f_s.html">FATFS</a> *<a class="el" href="sdlog_8c.html#ae5bcde72e0e0b29ec86d00ba3e5cd51f">fs</a>)</td></tr>
+<tr class="memdesc:gad1284e7022455b6eaf14176afcf2374c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mount/Unmount a logical drive.  <br /></td></tr>
+<tr class="memitem:gacb633554872f5dd609f5bb507cf57b20" id="r_gacb633554872f5dd609f5bb507cf57b20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#gacb633554872f5dd609f5bb507cf57b20">pf_open</a> (const char *path)</td></tr>
+<tr class="memdesc:gacb633554872f5dd609f5bb507cf57b20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a file.  <br /></td></tr>
+<tr class="memitem:ga4c0cf23d8b1ef29708dc2582f7857195" id="r_ga4c0cf23d8b1ef29708dc2582f7857195"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#ga4c0cf23d8b1ef29708dc2582f7857195">pf_read</a> (void *buff, UINT btr, UINT *br)</td></tr>
+<tr class="memdesc:ga4c0cf23d8b1ef29708dc2582f7857195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read data from the open file.  <br /></td></tr>
+<tr class="memitem:gac963c34444665d193f9350884d388836" id="r_gac963c34444665d193f9350884d388836"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#gac963c34444665d193f9350884d388836">pf_write</a> (const void *buff, UINT btw, UINT *bw)</td></tr>
+<tr class="memdesc:gac963c34444665d193f9350884d388836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to the open file.  <br /></td></tr>
+<tr class="memitem:ga65853bdcaf0be6196211856875ad405d" id="r_ga65853bdcaf0be6196211856875ad405d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#ga65853bdcaf0be6196211856875ad405d">pf_lseek</a> (DWORD ofs)</td></tr>
+<tr class="memdesc:ga65853bdcaf0be6196211856875ad405d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move file pointer of the open file.  <br /></td></tr>
+<tr class="memitem:ga627b0189dc01f2d4182234dd1e893458" id="r_ga627b0189dc01f2d4182234dd1e893458"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#ga627b0189dc01f2d4182234dd1e893458">pf_opendir</a> (<a class="el" href="struct_d_i_r.html">DIR</a> *dj, const char *path)</td></tr>
+<tr class="memdesc:ga627b0189dc01f2d4182234dd1e893458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a directory.  <br /></td></tr>
+<tr class="memitem:ga5cecf1cccc471007c47c6e212cba9475" id="r_ga5cecf1cccc471007c47c6e212cba9475"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#ga5cecf1cccc471007c47c6e212cba9475">pf_readdir</a> (<a class="el" href="struct_d_i_r.html">DIR</a> *dj, <a class="el" href="struct_f_i_l_i_n_f_o.html">FILINFO</a> *fno)</td></tr>
+<tr class="memdesc:ga5cecf1cccc471007c47c6e212cba9475"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a directory item from the open directory.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Petit FatFs - FAT file system module interface. </p>
 <p>This is the header file for the Petit FatFs module, a lightweight subset of FatFs designed for small embedded systems.</p>
-<dl class="section note"><dt>Note</dt><dd>This library is used for reading/writing to the SD card. </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>ChaN (Original Author) </dd>
-<dd>
-Team DE2-Project (Integration) </dd></dl>
-<dl class="section date"><dt>Date</dt><dd>2024 </dd></dl>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (C) 2019, ChaN, all right reserved. </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>ChaN (Original Author) </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2019 </dd></dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">

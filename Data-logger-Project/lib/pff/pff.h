@@ -1,17 +1,3 @@
-/**
- * @file pff.h
- * @brief Petit FatFs - FAT file system module interface.
- *
- * This is the header file for the Petit FatFs module, a lightweight subset of FatFs
- * designed for small embedded systems.
- *
- * @note This library is used for reading/writing to the SD card.
- * @author ChaN (Original Author)
- * @author Team DE2-Project (Integration)
- * @date 2024
- * @copyright Copyright (C) 2019, ChaN, all right reserved.
- */
-
 /*---------------------------------------------------------------------------/
 /  Petit FatFs - FAT file system module include file  R0.03a
 /----------------------------------------------------------------------------/
@@ -28,8 +14,25 @@
 /
 /----------------------------------------------------------------------------*/
 
+
 #ifndef PF_DEFINED
 #define PF_DEFINED	8088	/* Revision ID */
+
+/**
+ * @file pff.h
+ * @brief Petit FatFs - FAT file system module interface.
+ *
+ * This is the header file for the Petit FatFs module, a lightweight subset of FatFs
+ * designed for small embedded systems.
+ *
+ * @author ChaN (Original Author)
+ * @date 2019
+ *
+ * @addtogroup storage
+ * @{
+ * @defgroup pff_driver Petit FatFs Driver
+ * @brief Lightweight FAT file system interface.
+ * @{
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,7 +45,7 @@ extern "C" {
 #endif
 
 
-/* Integer types used for FatFs API */
+/* -- Integer types used for FatFs API --------------------------------- */
 
 #if defined(_WIN32)	/* Main development platform */
 #include <windows.h>
@@ -70,96 +73,132 @@ typedef unsigned long	DWORD;	/* 32-bit unsigned integer */
 #endif
 
 
-/* File system object structure */
+/* -- File system object structure ------------------------------------- */
 
 typedef struct {
-	BYTE	fs_type;	/* FAT sub type */
-	BYTE	flag;		/* File status flags */
-	BYTE	csize;		/* Number of sectors per cluster */
+	BYTE	fs_type;	/**< FAT sub type */
+	BYTE	flag;		/**< File status flags */
+	BYTE	csize;		/**< Number of sectors per cluster */
 	BYTE	pad1;
-	WORD	n_rootdir;	/* Number of root directory entries (0 on FAT32) */
-	CLUST	n_fatent;	/* Number of FAT entries (= number of clusters + 2) */
-	DWORD	fatbase;	/* FAT start sector */
-	DWORD	dirbase;	/* Root directory start sector (Cluster# on FAT32) */
-	DWORD	database;	/* Data start sector */
-	DWORD	fptr;		/* File R/W pointer */
-	DWORD	fsize;		/* File size */
-	CLUST	org_clust;	/* File start cluster */
-	CLUST	curr_clust;	/* File current cluster */
-	DWORD	dsect;		/* File current data sector */
+	WORD	n_rootdir;	/**< Number of root directory entries (0 on FAT32) */
+	CLUST	n_fatent;	/**< Number of FAT entries (= number of clusters + 2) */
+	DWORD	fatbase;	/**< FAT start sector */
+	DWORD	dirbase;	/**< Root directory start sector (Cluster# on FAT32) */
+	DWORD	database;	/**< Data start sector */
+	DWORD	fptr;		/**< File R/W pointer */
+	DWORD	fsize;		/**< File size */
+	CLUST	org_clust;	/**< File start cluster */
+	CLUST	curr_clust;	/**< File current cluster */
+	DWORD	dsect;		/**< File current data sector */
 } FATFS;
 
 
-
-/* Directory object structure */
+/* -- Directory object structure --------------------------------------- */
 
 typedef struct {
-	WORD	index;		/* Current read/write index number */
-	BYTE*	fn;			/* Pointer to the SFN (in/out) {file[8],ext[3],status[1]} */
-	CLUST	sclust;		/* Table start cluster (0:Static table) */
-	CLUST	clust;		/* Current cluster */
-	DWORD	sect;		/* Current sector */
+	WORD	index;		/**< Current read/write index number */
+	BYTE*	fn;			/**< Pointer to the SFN (in/out) {file[8],ext[3],status[1]} */
+	CLUST	sclust;		/**< Table start cluster (0:Static table) */
+	CLUST	clust;		/**< Current cluster */
+	DWORD	sect;		/**< Current sector */
 } DIR;
 
 
-
-/* File status structure */
+/* -- File status structure -------------------------------------------- */
 
 typedef struct {
-	DWORD	fsize;		/* File size */
-	WORD	fdate;		/* Last modified date */
-	WORD	ftime;		/* Last modified time */
-	BYTE	fattrib;	/* Attribute */
-	char	fname[13];	/* File name */
+	DWORD	fsize;		/**< File size */
+	WORD	fdate;		/**< Last modified date */
+	WORD	ftime;		/**< Last modified time */
+	BYTE	fattrib;	/**< Attribute */
+	char	fname[13];	/**< File name */
 } FILINFO;
 
 
-
-/* File function return code (FRESULT) */
+/* -- File function return code (FRESULT) ------------------------------ */
 
 typedef enum {
-	FR_OK = 0,			/* 0 */
-	FR_DISK_ERR,		/* 1 */
-	FR_NOT_READY,		/* 2 */
-	FR_NO_FILE,			/* 3 */
-	FR_NOT_OPENED,		/* 4 */
-	FR_NOT_ENABLED,		/* 5 */
-	FR_NO_FILESYSTEM	/* 6 */
+	FR_OK = 0,			/**< 0: Succeeded */
+	FR_DISK_ERR,		/**< 1: Disk error */
+	FR_NOT_READY,		/**< 2: Not ready */
+	FR_NO_FILE,			/**< 3: File not found */
+	FR_NOT_OPENED,		/**< 4: File not opened */
+	FR_NOT_ENABLED,		/**< 5: File system not enabled */
+	FR_NO_FILESYSTEM	/**< 6: No valid file system */
 } FRESULT;
 
 
+/* -- Petit FatFs module application interface ------------------------- */
 
-/*--------------------------------------------------------------*/
-/* Petit FatFs module application interface                     */
+/**
+ * @brief  Mount/Unmount a logical drive.
+ * @param  fs Pointer to the file system object.
+ * @return FRESULT status code.
+ */
+FRESULT pf_mount (FATFS* fs);
 
-FRESULT pf_mount (FATFS* fs);								/* Mount/Unmount a logical drive */
-FRESULT pf_open (const char* path);							/* Open a file */
-FRESULT pf_read (void* buff, UINT btr, UINT* br);			/* Read data from the open file */
-FRESULT pf_write (const void* buff, UINT btw, UINT* bw);	/* Write data to the open file */
-FRESULT pf_lseek (DWORD ofs);								/* Move file pointer of the open file */
-FRESULT pf_opendir (DIR* dj, const char* path);				/* Open a directory */
-FRESULT pf_readdir (DIR* dj, FILINFO* fno);					/* Read a directory item from the open directory */
+/**
+ * @brief  Open a file.
+ * @param  path Pointer to the null-terminated string specifying the file name.
+ * @return FRESULT status code.
+ */
+FRESULT pf_open (const char* path);
+
+/**
+ * @brief  Read data from the open file.
+ * @param  buff Pointer to the read buffer.
+ * @param  btr  Number of bytes to read.
+ * @param  br   Pointer to the number of bytes read.
+ * @return FRESULT status code.
+ */
+FRESULT pf_read (void* buff, UINT btr, UINT* br);
+
+/**
+ * @brief  Write data to the open file.
+ * @param  buff Pointer to the data to be written.
+ * @param  btw  Number of bytes to write.
+ * @param  bw   Pointer to the number of bytes written.
+ * @return FRESULT status code.
+ */
+FRESULT pf_write (const void* buff, UINT btw, UINT* bw);
+
+/**
+ * @brief  Move file pointer of the open file.
+ * @param  ofs File pointer from top of file.
+ * @return FRESULT status code.
+ */
+FRESULT pf_lseek (DWORD ofs);
+
+/**
+ * @brief  Open a directory.
+ * @param  dj   Pointer to the directory object to create.
+ * @param  path Pointer to the directory path.
+ * @return FRESULT status code.
+ */
+FRESULT pf_opendir (DIR* dj, const char* path);
+
+/**
+ * @brief  Read a directory item from the open directory.
+ * @param  dj  Pointer to the open directory object.
+ * @param  fno Pointer to the file information structure to return.
+ * @return FRESULT status code.
+ */
+FRESULT pf_readdir (DIR* dj, FILINFO* fno);
 
 
-
-/*--------------------------------------------------------------*/
-/* Flags and offset address                                     */
-
+/* -- Flags and offset address ----------------------------------------- */
 
 /* File status flag (FATFS.flag) */
 #define	FA_OPENED	0x01
 #define	FA_WPRT		0x02
 #define	FA__WIP		0x40
 
-
 /* FAT sub type (FATFS.fs_type) */
 #define FS_FAT12	1
 #define FS_FAT16	2
 #define FS_FAT32	3
 
-
 /* File attribute bits for directory entry */
-
 #define	AM_RDO	0x01	/* Read only */
 #define	AM_HID	0x02	/* Hidden */
 #define	AM_SYS	0x04	/* System */
@@ -173,5 +212,8 @@ FRESULT pf_readdir (DIR* dj, FILINFO* fno);					/* Read a directory item from th
 #ifdef __cplusplus
 }
 #endif
+
+/** @} */ // End of pff_driver
+/** @} */ // End of drivers
 
 #endif /* _PFATFS */

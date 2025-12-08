@@ -67,12 +67,12 @@ $(function(){initNavTree('pff_8c.html','',''); });
 <p>Petit FatFs - FAT file system module implementation.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="pff_8h_source.html">pff.h</a>&quot;</code><br />
-<code>#include &quot;diskio.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="diskio_8h_source.html">diskio.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a9a683ba696afe24874d4b242b6ee8e05" id="r_a9a683ba696afe24874d4b242b6ee8e05"><td class="memItemLeft" align="right" valign="top"><a id="a9a683ba696afe24874d4b242b6ee8e05" name="a9a683ba696afe24874d4b242b6ee8e05"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_FS_32ONLY</b>&#160;&#160;&#160;1</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_FS_32ONLY</b>&#160;&#160;&#160;0</td></tr>
 <tr class="memitem:a0b44b98bdf43fe3d4442ec08b61258d6" id="r_a0b44b98bdf43fe3d4442ec08b61258d6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b44b98bdf43fe3d4442ec08b61258d6">ABORT</a>(err)</td></tr>
 <tr class="memitem:a89b2514198590e139dd064c5d534f302" id="r_a89b2514198590e139dd064c5d534f302"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89b2514198590e139dd064c5d534f302">IsUpper</a>(c)</td></tr>
 <tr class="memitem:a4a9d454724926bd51a3aed589a97f08b" id="r_a4a9d454724926bd51a3aed589a97f08b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a9d454724926bd51a3aed589a97f08b">IsLower</a>(c)</td></tr>
@@ -165,16 +165,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad1284e7022455b6eaf14176afcf2374c" id="r_ad1284e7022455b6eaf14176afcf2374c"><td class="memItemLeft" align="right" valign="top"><a id="ad1284e7022455b6eaf14176afcf2374c" name="ad1284e7022455b6eaf14176afcf2374c"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_mount</b> (<a class="el" href="struct_f_a_t_f_s.html">FATFS</a> *<a class="el" href="sdlog_8c.html#ae5bcde72e0e0b29ec86d00ba3e5cd51f">fs</a>)</td></tr>
-<tr class="memitem:acb633554872f5dd609f5bb507cf57b20" id="r_acb633554872f5dd609f5bb507cf57b20"><td class="memItemLeft" align="right" valign="top"><a id="acb633554872f5dd609f5bb507cf57b20" name="acb633554872f5dd609f5bb507cf57b20"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_open</b> (const char *path)</td></tr>
-<tr class="memitem:a4c0cf23d8b1ef29708dc2582f7857195" id="r_a4c0cf23d8b1ef29708dc2582f7857195"><td class="memItemLeft" align="right" valign="top"><a id="a4c0cf23d8b1ef29708dc2582f7857195" name="a4c0cf23d8b1ef29708dc2582f7857195"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_read</b> (void *buff, UINT btr, UINT *br)</td></tr>
-<tr class="memitem:ac963c34444665d193f9350884d388836" id="r_ac963c34444665d193f9350884d388836"><td class="memItemLeft" align="right" valign="top"><a id="ac963c34444665d193f9350884d388836" name="ac963c34444665d193f9350884d388836"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_write</b> (const void *buff, UINT btw, UINT *bw)</td></tr>
-<tr class="memitem:a65853bdcaf0be6196211856875ad405d" id="r_a65853bdcaf0be6196211856875ad405d"><td class="memItemLeft" align="right" valign="top"><a id="a65853bdcaf0be6196211856875ad405d" name="a65853bdcaf0be6196211856875ad405d"></a>
-FRESULT&#160;</td><td class="memItemRight" valign="bottom"><b>pf_lseek</b> (DWORD ofs)</td></tr>
+<tr class="memitem:gad1284e7022455b6eaf14176afcf2374c" id="r_gad1284e7022455b6eaf14176afcf2374c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#gad1284e7022455b6eaf14176afcf2374c">pf_mount</a> (<a class="el" href="struct_f_a_t_f_s.html">FATFS</a> *<a class="el" href="sdlog_8c.html#ae5bcde72e0e0b29ec86d00ba3e5cd51f">fs</a>)</td></tr>
+<tr class="memdesc:gad1284e7022455b6eaf14176afcf2374c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mount/Unmount a logical drive.  <br /></td></tr>
+<tr class="memitem:gacb633554872f5dd609f5bb507cf57b20" id="r_gacb633554872f5dd609f5bb507cf57b20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__pff__driver.html#ga49d0171ecbd362cda5680a0d360db44c">FRESULT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pff__driver.html#gacb633554872f5dd609f5bb507cf57b20">pf_open</a> (const char *path)</td></tr>
+<tr class="memdesc:gacb633554872f5dd609f5bb507cf57b20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a file.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Petit FatFs - FAT file system module implementation. </p>
