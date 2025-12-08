@@ -34,7 +34,7 @@ This project focuses on creating a portable environmental data logger implemente
   - used for connecting SD card
 
 ## Circuit schematics
-![Circuit schematics](images/Data-logger-Schematic.png "Circuit schematics")
+![Circuit schematics](images/Data-logger-Schematic.jpg "Circuit schematics")
 
 ## Pinout Configuration
 
