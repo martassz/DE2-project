@@ -14,7 +14,6 @@
 /
 /----------------------------------------------------------------------------*/
 
-
 #ifndef PF_DEFINED
 #define PF_DEFINED	8088	/* Revision ID */
 
@@ -33,6 +32,7 @@
  * @defgroup pff_driver Petit FatFs Driver
  * @brief Lightweight FAT file system interface.
  * @{
+ */ 
 
 #ifdef __cplusplus
 extern "C" {
@@ -214,6 +214,6 @@ FRESULT pf_readdir (DIR* dj, FILINFO* fno);
 #endif
 
 /** @} */ // End of pff_driver
-/** @} */ // End of drivers
+/** @} */ // End of storage
 
 #endif /* _PFATFS */
