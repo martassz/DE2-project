@@ -98,3 +98,4 @@ Plotted data from SD card (using the Python script)
 
 * Digital Electronics 2 Course (Brno University of Technology): https://github.com/tomas-fryza/avr-labs
 * Petit FAT File System Module: https://elm-chan.org/fsw/ff/00index_p.html
+* AI Assistant https://gemini.google.com/
